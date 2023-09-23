@@ -1,0 +1,44 @@
+{% extends 'boletos.html' %}
+    {% block body%}
+     {% if (resultado) and (search_performed) %}
+        {% for resultados in resultado %}
+          <div class="card">
+            <div class="row">
+             <div class="col-sm">
+               <div class="swiper swiper-eventos">
+                  <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="https://images6.alphacoders.com/132/1326393.png">
+                   </div>
+                   <div class="swiper-slide">
+                        <img src="https://images2.alphacoders.com/132/1329600.png">
+                   </div>
+                  </div>
+                  <div class="swiper-pagination"></div>
+                  <div class="swiper-button-prev"></div>
+                  <div class="swiper-button-next"></div>
+                </div>
+              </div>
+              <div class="col-sm">
+                <div class="card-body" style="width: 500px;">
+                  <h3 class="card-title">{{ resultados.2}}</h5>
+                  <p class="card-text"><strong>Fecha y hora: </strong>{{ resultados.3 }}</p>
+                  <p class="card-text"><strong>Descripcion breve del concierto: </strong>{{ resultados.4 }}</p>
+                  <p class="card-price"></p>
+                  <form id="botonCompra" action="{{url_for('cargarTipoEntradas')}}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
+                    <input type="hidden" name="id_Evento" value="{{ resultados.0 }}">  
+                    <button type="submit" class="btn btn-primary">Comprar entradas</button>
+                  </form>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        <a class="btn btn btn-primary" href="{{url_for('boletos')}}" type="button" style="margin-left: 987px; width: 100px; height: 60px;">Volver</a>
+      {% else %}
+      <p class="card-price" style="margin-left: 906px; font-size: xx-large;"> No hay resultados </p> 
+      <a class="btn btn btn-primary" href="{{url_for('boletos')}}" type="button" style="margin-left: 987px; width: 100px; height: 60px;">Volver</a> 
+      {% endif %}
+    {% endblock %}

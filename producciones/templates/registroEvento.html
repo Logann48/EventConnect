@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizador - Registrar evento</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/main.css">
+    <link rel="stylesheet" href="/static/login.css">
+    <link rel="stylesheet" href="/static/registrar.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Paytone+One&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{url_for('administrativo')}}">Inicio</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('adminclientes')}}">Clientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('admineventos')}}">Eventos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('adminorganizadores')}}">Organizadores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('adminreportes')}}">Reportes</a>
+                    </li>
+                    <li class="nav-item ms-auto">
+                        <a class="nav-link" href="/">Salir</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <div class="screen" style="width: 550px; height: 720px; margin-top: 40px;">
+                    <div class="screen__content">
+                        <h2 style="text-align: center; margin-top: 10px;">Registro de eventos</h2>
+                        {% with messages = get_flashed_messages() %}
+                            {%if messages%}
+                        <br/>
+                            {% for message in messages %}
+                        <div class="alert alert-primary alert-dismissible" role="alert">
+                        <strong>{{message}}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                            {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+                        <form class="register" id="formulario" action="/registroevento" method="post">
+                            <div class="form" style="margin-top: 1px;">
+                                <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
+                                <p style="margin-bottom: 0%;">Titular del evento:</p>
+                                <input type="text" name="nombreEv" class="login__input" id="nombreEv" placeholder="Ej: Concierto benéfico" style="margin-bottom: 10%; width: 500px;">
+                                <p style="margin-bottom: 0%;">Fecha:</p>
+                                <input type="date" name="myDate" class="login__input" id="myDate" style="margin-bottom: 10%;">
+                                <p style="margin-bottom: 0%;">Hora:</p>
+                                <input type="time" name="horaEv" class="login__input" id="horaEv" style="margin-bottom: 10%;">
+                                <p style="margin-bottom: 0%;">Elija la categoría:</p>
+                                <select name="catEvento" id="catEvento" style="margin-bottom: 10%; width: 232px;">
+                                    <option value="1">Concierto</option>
+                                    <option value="2">Conferencia</option>
+                                    <option value="3">Exhibición</option>
+                                </select>
+                                <p style="margin-bottom: 0%;">Coloque una descripción:</p>
+                                <textarea name="descripEv" class="login__input" id="descripEv"  placeholder="Ej: Concierto llevado a cabo por la organización X para beneficio de los niños" style="margin-bottom: 10%; width: 500px; height: 100px;"></textarea>
+                                <button type="submit" class="button login__submit" id="loginButton" style="margin-top: 0%; height: 70px; width: 150px; margin-left: 70%;">Guardar evento</button>
+                                <hr>
+                            </div>			
+                        </form>
+                    </div>
+                    <div class="screen__background">
+                        <span class="screen__background__shape screen__background__shape4"></span>
+                        <span class="screen__background__shape screen__background__shape3"></span>		
+                        <span class="screen__background__shape screen__background__shape2"></span>
+                        <span class="screen__background__shape screen__background__shape1"></span>
+                    </div>		
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="screen" style="width: 550px; height: 520px; margin-top: 40px;">
+                    <div class="screen__content">
+                        <h2 style="text-align: center; margin-top: 40px;">Ajustes de entradas</h2>
+                        {% with messages = get_flashed_messages() %}
+                            {%if messages%}
+                        <br/>
+                            {% for message in messages %}
+                        <div class="alert alert-primary alert-dismissible" role="alert">
+                        <strong>{{message}}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                            {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+                        <form class="register" id="formulario" action="/" method="post" style="width: 500px;">
+                            <div class="form" style="margin-top: 1px;">
+                                <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <p>Tipos de entrada del evento</p>
+                                        <input type="text" class="login__input" placeholder="General" style="margin-bottom: 10%;">
+                                        <input type="text" class="login__input" placeholder="Vip" style="margin-bottom: 10%;">
+                                        <input type="text" class="login__input" placeholder="Vip+" style="margin-bottom: 10%;">
+                                        <input type="text" class="login__input" placeholder="Ultra" style="margin-bottom: 10%;">
+                                    </div>
+                                    <div class="col-sm">
+                                        <p>Precios ($)</p>
+                                        <input type="number" min="1" class="login__input" style="margin-bottom: 10%;">
+                                        <input type="number" min="1" class="login__input" style="margin-bottom: 10%;">
+                                        <input type="number" min="1" class="login__input" style="margin-bottom: 10%;">
+                                        <input type="number" min="1" class="login__input" style="margin-bottom: 10%;">
+                                    </div>
+                                </div>
+                                <button type="submit" class="button login__submit" id="loginButton" style="margin-top: 13%; height: 70px; width: 150px; margin-left: 34%;">Guardar tipos de entrada</button>
+                                <hr>
+                            </div>			
+                        </form>
+                    </div>
+                    <div class="screen__background">
+                        <span class="screen__background__shape screen__background__shape4"></span>
+                        <span class="screen__background__shape screen__background__shape3"></span>		
+                        <span class="screen__background__shape screen__background__shape2"></span>
+                        <span class="screen__background__shape screen__background__shape1"></span>
+                    </div>		
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
+        
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        
+        if (month < 10) month = '0' + month;
+        if (day < 10) day = '0' + day;
+        
+        var tomorrow = year + "-" + month + "-" + day;
+        
+        document.getElementById("myDate").setAttribute("min", tomorrow);
+    </script>
+        
+    <script src="/static/registro_Eventos.js"></script>
+</body>
+</html>
