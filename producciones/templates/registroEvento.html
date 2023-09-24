@@ -13,23 +13,26 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{url_for('organizador')}}">Inicio</a>
+            <a class="navbar-brand" href="{{url_for('administrativo')}}">Inicio</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{url_for('gestionevento')}}">Gestión de eventos</a>
+                        <a class="nav-link active" aria-current="page" href="{{url_for('adminclientes')}}">Clientes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{url_for('registroevento')}}">Registrar evento</a>
+                        <a class="nav-link active" aria-current="page" href="{{url_for('admineventos')}}">Eventos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{url_for('actualizarDatos')}}">Mis datos</a>
+                        <a class="nav-link active" aria-current="page" href="{{url_for('adminorganizadores')}}">Organizadores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('adminreportes')}}">Reportes</a>
                     </li>
                     <li class="nav-item ms-auto">
-                        <a class="nav-link" href="{{url_for('logout')}}">Salir</a>
+                        <a class="nav-link" href="/">Salir</a>
                     </li>
                 </ul>
             </div>
@@ -37,98 +40,75 @@
     </nav>
 
     <div class="container">
-        <div class="row">
-            <div class="col-sm">
-                <div class="screen" style="width: 550px; height: 720px; margin-top: 40px;">
-                    <div class="screen__content">
-                        <h2 style="text-align: center; margin-top: 10px;">Registro de eventos</h2>
+        <div class="screen" style="width: 1080px; height: 750px; margin-top: 40px;">
+            <div class="screen__content">
+                <div class="row">
+                    <div class="col-sm">
+                        <h2 style="text-align: center; margin-top: 40px;">Registro de eventos</h2>
                         {% with messages = get_flashed_messages() %}
-                            {%if messages%}
+                        {%if messages%}
                         <br/>
-                            {% for message in messages %}
+                        {% for message in messages %}
                         <div class="alert alert-primary alert-dismissible" role="alert">
                         <strong>{{message}}</strong>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                            {% endfor %}
-                            {% endif %}
+                        {% endfor %}
+                        {% endif %}
                         {% endwith %}
                         <form class="register" id="formulario" action="/registroevento" method="post">
                             <div class="form" style="margin-top: 1px;">
-                                <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
-                                <p style="margin-bottom: 0%;">Titular del evento:</p>
-                                <input type="text" name="nombreEv" class="login__input" id="nombreEv" placeholder="Ej: Concierto benéfico" style="margin-bottom: 10%; width: 500px;">
-                                <p style="margin-bottom: 0%;">Fecha:</p>
-                                <input type="date" name="myDate" class="login__input" id="myDate" style="margin-bottom: 10%;">
-                                <p style="margin-bottom: 0%;">Hora:</p>
-                                <input type="time" name="horaEv" class="login__input" id="horaEv" style="margin-bottom: 10%;">
-                                <p style="margin-bottom: 0%;">Elija la categoría:</p>
-                                <select name="catEvento" id="catEvento" style="margin-bottom: 10%; width: 232px;">
-                                    <option value="1">Concierto</option>
-                                    <option value="2">Conferencia</option>
-                                    <option value="3">Exhibición</option>
-                                </select>
-                                <p style="margin-bottom: 0%;">Coloque una descripción:</p>
-                                <textarea name="descripEv" class="login__input" id="descripEv"  placeholder="Ej: Concierto llevado a cabo por la organización X para beneficio de los niños" style="margin-bottom: 10%; width: 500px; height: 100px;"></textarea>
-                                <button type="submit" class="button login__submit" id="loginButton" style="margin-top: 0%; height: 70px; width: 150px; margin-left: 70%;">Guardar evento</button>
-                                <hr>
+                            <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
+                            <p style="margin-bottom: 0%;">Titular del evento:</p>
+                            <input type="text" name="nombreEv" class="login__input" id="nombreEv" placeholder="Ej: Concierto benéfico" style="margin-bottom: 10%; width: 500px;">
+                            <p style="margin-bottom: 0%;">Fecha:</p>
+                            <input type="date" name="myDate" class="login__input" id="myDate" style="margin-bottom: 10%;">
+                            <p style="margin-bottom: 0%;">Hora:</p>
+                            <input type="time" name="horaEv" class="login__input" id="horaEv" style="margin-bottom: 10%;">
+                            <p style="margin-bottom: 0%;">Elija la categoría:</p>
+                            <select name="catEvento" id="catEvento" style="margin-bottom: 10%; width: 232px;">
+                                <option value="1">Concierto</option>
+                                <option value="2">Conferencia</option>
+                                <option value="3">Exhibición</option>
+                            </select>
+                            <p style="margin-bottom: 0%;">Coloque una descripción:</p>
+                            <textarea name="descripEv" class="login__input" id="descripEv"  placeholder="Ej: Concierto llevado a cabo por la organización X para beneficio de los niños" style="margin-bottom: 10%; width: 500px; height: 100px;"></textarea>
+                            <hr>
                             </div>			
-                        </form>
-                    </div>
-                    <div class="screen__background">
-                        <span class="screen__background__shape screen__background__shape4"></span>
-                        <span class="screen__background__shape screen__background__shape3"></span>		
-                        <span class="screen__background__shape screen__background__shape2"></span>
-                        <span class="screen__background__shape screen__background__shape1"></span>
-                    </div>		
-                </div>
-            </div>
-            <div class="col-sm">
-                <div class="screen" style="width: 550px; height: 520px; margin-top: 40px;">
-                    <div class="screen__content">
-                        <h2 style="text-align: center; margin-top: 40px;">Ajustes de entradas</h2>
-                        {% with messages = get_flashed_messages() %}
-                            {%if messages%}
-                        <br/>
-                            {% for message in messages %}
-                        <div class="alert alert-primary alert-dismissible" role="alert">
-                        <strong>{{message}}</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                            {% endfor %}
-                            {% endif %}
-                        {% endwith %}
-                        <form class="register" id="formulario" action="/" method="post" style="width: 500px;">
+                            </div>           
+                            <div class="col-sm">
+                            <h2 style="text-align: center; margin-top: 40px; margin-bottom: 70px;">Ajustes de entradas</h2>
+                            <br/>
                             <div class="form" style="margin-top: 1px;">
                                 <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
                                 <div class="row">
                                     <div class="col-sm">
                                         <p>Tipos de entrada del evento</p>
-                                        <input type="text" class="login__input" placeholder="General" style="margin-bottom: 10%;">
-                                        <input type="text" class="login__input" placeholder="Vip" style="margin-bottom: 10%;">
-                                        <input type="text" class="login__input" placeholder="Vip+" style="margin-bottom: 10%;">
-                                        <input type="text" class="login__input" placeholder="Ultra" style="margin-bottom: 10%;">
+                                        <input type="text" name="tipo1" id="tipo1" value="" class="login__input" placeholder="Ejemplo: General" style="margin-bottom: 10%;">
+                                        <input type="text" name="tipo2" id="tipo2" value="" class="login__input" placeholder="Ejemplo: Vip" style="margin-bottom: 10%;">
+                                        <input type="text" name="tipo3" id="tipo3" value="" class="login__input" placeholder="Ejemplo: Vip+" style="margin-bottom: 10%;">
+                                        <input type="text" name="tipo4" id="tipo4" value="" class="login__input" placeholder="Ejemplo: Ultra" style="margin-bottom: 10%;">
                                     </div>
                                     <div class="col-sm">
                                         <p>Precios ($)</p>
-                                        <input type="number" min="1" class="login__input" style="margin-bottom: 10%;">
-                                        <input type="number" min="1" class="login__input" style="margin-bottom: 10%;">
-                                        <input type="number" min="1" class="login__input" style="margin-bottom: 10%;">
-                                        <input type="number" min="1" class="login__input" style="margin-bottom: 10%;">
+                                        <input type="number" name="entrada1" min="1" id="entrada1" class="login__input" style="margin-bottom: 10%;">
+                                        <input type="number" name="entrada2" min="1" id="entrada2" class="login__input" style="margin-bottom: 10%;">
+                                        <input type="number" name="entrada3" min="1" id="entrada3" class="login__input" style="margin-bottom: 10%;">
+                                        <input type="number" name="entrada4" min="1" id="entrada4" class="login__input" style="margin-bottom: 10%;">
                                     </div>
                                 </div>
-                                <button type="submit" class="button login__submit" id="loginButton" style="margin-top: 13%; height: 70px; width: 150px; margin-left: 34%;">Guardar tipos de entrada</button>
                                 <hr>
-                            </div>			
+                            </div>
+                            <button type="submit" class="button login__submit" id="loginButton" style="height: 70px; width: 150px; text-align: center; margin-top: 200px; margin-left: 350px;">Guardar evento</button>			
                         </form>
                     </div>
-                    <div class="screen__background">
-                        <span class="screen__background__shape screen__background__shape4"></span>
-                        <span class="screen__background__shape screen__background__shape3"></span>		
-                        <span class="screen__background__shape screen__background__shape2"></span>
-                        <span class="screen__background__shape screen__background__shape1"></span>
-                    </div>		
-                </div>
+                </div>                    
+            </div>
+            <div class="screen__background">
+                <span class="screen__background__shape screen__background__shape4" style="background-color: rgb(126, 167, 220);"></span>
+                <span class="screen__background__shape screen__background__shape3"></span>		
+                <span class="screen__background__shape screen__background__shape2"></span>
+                <span class="screen__background__shape screen__background__shape1"></span>
             </div>
         </div>
     </div>
