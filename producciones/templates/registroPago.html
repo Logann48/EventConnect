@@ -11,35 +11,31 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Paytone+One&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{url_for('administrativo')}}">Inicio</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{url_for('adminclientes')}}">Clientes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{url_for('admineventos')}}">Eventos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{url_for('adminorganizadores')}}">Organizadores</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{url_for('adminreportes')}}">Reportes</a>
-                    </li>
-                    <li class="nav-item ms-auto">
-                        <a class="nav-link" href="/">Salir</a>
-                    </li>
-                </ul>
-            </div>
+          <a class="navbar-brand" href="{{url_for('usuario')}}">Inicio</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{url_for('boletos')}}">Eventos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="">Mis entradas</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{url_for('actualizarDatos')}}">Mis datos</a>
+              </li>
+              <li class="nav-item ms-auto">
+                <a class="nav-link" href="{{url_for('logout')}}">Salir</a>
+              </li>
+            </ul>
+          </div>
         </div>
-    </nav>
+      </nav>
 
-    
     <div class="container">
         <div class="row" style="height: 1px; background-color: #5a7184;">
         <div class="col-sm">
@@ -75,7 +71,7 @@
                                 <p style="margin-bottom: 0%; margin-top: 5%;" id="cuenta">Número de teléfono</p>
                                 <input type="text" name="telefono" class="login__input" id="telefono" placeholder="Ej: 04145555555">
                                 <p style="margin-bottom: 0%; margin-top: 5%;">Monto transferido</p>
-                                <input type="number" step="0.01" name="monto" class="login__input" id="monto" placeholder="Ej: 100.00 Bs ">
+                                <input type="number" step="0.01" name="monto" class="login__input" id="monto" min="1" placeholder="Ej: 100.00 Bs ">
                                 <h5 style="margin-bottom: 3%; margin-top: 10%;">Imágen adjunta del comprobante</h5>
                                 <input type="file" name="file" class="login__input" id="file" style="width: 410px;" accept="image/png, image/jpeg, image/jpg, image/gif">
                             

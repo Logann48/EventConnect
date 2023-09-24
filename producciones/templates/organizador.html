@@ -11,32 +11,38 @@
 
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="{{url_for('administrativo')}}">Inicio</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{url_for('adminclientes')}}">Clientes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{url_for('admineventos')}}">Eventos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{url_for('adminorganizadores')}}">Organizadores</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{url_for('adminreportes')}}">Reportes</a>
-                </li>
-                <li class="nav-item ms-auto">
-                    <a class="nav-link" href="/">Salir</a>
-                </li>
-            </ul>
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{url_for('organizador')}}">Inicio</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('gestionevento')}}">Gestión de eventos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('registroevento')}}">Registrar evento</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('actualizarDatos')}}">Mis datos</a>
+                    </li>
+                    <li class="nav-item ms-auto">
+                        <a class="nav-link" href="{{url_for('logout')}}">Salir</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
+
+    <section class="home" id="home">
+        <div class="home-text">
+            <h1>Los mejores eventos de toda Venezuela</h1>
+            <p>¡Bienvenido a EventConnect, su puerta de entrada a las experiencias más emocionantes e inolvidables en Lara, Venezuela! Ubicados en el corazón de la vibrante ciudad de Barqusimeto, somos su centro único para descubrir y asegurar entradas para los mejores eventos en el famoso complejo ferial de Barqusimeto.</p>
+        </div>
+      </section>
+
 </body>
 </html>

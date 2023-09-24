@@ -49,36 +49,41 @@
         </div>
     </nav>
 
-    <div class="container">
-        <h2>Lista de Usuarios</h2>
+    <div class="container" style="position: relative; width: 1700px;">
+        <h2>Lista de Pagos</h2>
     
         <div class="input-group flex-nowrap">
-          </div>
+        </div>
 
         <br>
-        <table class="table table-bordered table-striped" id="tabla-test">
+        <table class="table table-bordered table-striped" id="tabla-pago">
             <thead>
                 <tr>
-                    <th>Cédula</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Teléfono</th>
-                    <th>Email</th>
-                    <th>Dirección</th>
-                    <th>Opción</th>
+                    <th>Fecha de compra</th>
+                    <th>Nombre y apellido</th>
+                    <th>Cédula del cliente</th>
+                    <th>Método de pago</th>
+                    <th>Fecha del pago</th>
+                    <th>Nro. de Referencia</th>
+                    <th>Teléfono de la cuenta</th>
+                    <th>Monto</th>
+                    <th>Captura</th>
+                    <th>Confirmar pago</th>
                 </tr>
             </thead>
-            <tbody id="myTable">
-                
-                {% for usuario in usuarios %}
+            <tbody id="myTable"> 
+                {% for pago in pagos %}
                 <tr>
-                    <td>{{ usuario.0 }}</td>
-                    <td>{{ usuario.1 }}</td>
-                    <td>{{ usuario.2 }}</td>
-                    <td>{{ usuario.3 }}</td>
-                    <td>{{ usuario.4 }}</td>
-                    <td>{{ usuario.5 }}</td>
-                    <td><button class="btn btn-danger btn-sm">Deshabilitar</button></td>
+                    <td>{{ pago.2 }}</td>
+                    <td>{{ pago.3 }}</td>
+                    <td>{{ pago.4 }}</td>
+                    <td>{{ pago.5 }}</td>
+                    <td>{{ pago.6 }}</td>
+                    <td>{{ pago.7 }}</td>
+                    <td>{{ pago.8 }}</td>
+                    <td>{{ pago.9 }}</td>
+                    <td><img src="data:{{ pago.10 }}" alt="Image"></td>
+                    <td><button class="btn btn-primary btn-sm">Confirmarr</button></td>
                 </tr>
                 {% endfor %}
                 
@@ -100,7 +105,7 @@
         });
 
         $(document).ready(function(){
-            $("#tabla-test").DataTable();
+            $("#tabla-pago").DataTable();
         });
 
     </script>

@@ -75,6 +75,14 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
+@app.route('/usuario')
+@login_required
+def usuario():
+    if 'user_type' in session and session['user_type'] == 1:
+        return render_template('usuario.html')
+    else:
+        return redirect(url_for('login'))
+
     
 @app.route('/registrar', methods=['GET','POST'])
 def registrar():
@@ -301,6 +309,58 @@ def imagenesevento():
         return render_template('imagenesEvento.html')
     else:
         return redirect(url_for('login'))
+##########################################################################
+@app.route('/actualizardatos')
+@login_required
+def actualizarDatos():
+    if 'user_type' in session and session['user_type'] == 1|2|3:
+        cedula = current_user.cedula
+        cur = db.connection.cursor()
+        cur.execute("SELECT * FROM usuario WHERE cedula = %s", (cedula,))
+        dataUser = cur.fetchone()
+        db.connection.commit()
+        return render_template('actualizarDatos.html', cedula=cedula, datos=dataUser)
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/',  methods=['GET','POST'])
+@login_required
+def actualDatos():
+    if 'user_type' in session and session['user_type'] == 1|2|3:
+        if request.method=='POST':
+
+            cedula = request.form['cedula']
+            correo = request.form['correo']
+            telefono = request.form['telefono']
+            direccion = request.form['direccion']
+            
+            cur = db.connection.cursor()
+            
+            update_query = """
+            UPDATE usuario 
+            SET correo = %s, telefono = %s, direccion = %s
+            WHERE cedula = %s
+            """
+            cur.execute(update_query, (correo, telefono, direccion, cedula))
+            db.connection.commit()
+            flash('Datos cambiados con éxito', 'success')
+        return render_template('actualizarExito.html')
+    else:
+        return redirect(url_for('login'))
+######################################################################################
+@app.route('/adminPagos')
+@login_required
+def adminPagos():
+    if 'user_type' in session and session['user_type'] == 3:
+        cur = db.connection.cursor()
+        cur.execute('SELECT * FROM detalle_pago')
+        pagoDetail = cur.fetchall()
+        db.connection.commit()
+        return render_template('adminPagos.html', pagos=pagoDetail)
+    else:
+        return redirect(url_for('login'))
+#####################################################################################
+
 
 @app.route('/gestionevento')
 @login_required

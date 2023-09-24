@@ -10,35 +10,40 @@
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
         crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Paytone+One&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <title>EventConnect - Registro de organizador</title>
+    <title>EventConnect - Registro de administrador</title>
 </head>
 <body>
-
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{url_for('administrativo')}}" style="padding-right: 58%;">Inicio</a>
+            <a class="navbar-brand" href="{{url_for('administrativo')}}">Inicio</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{url_for('adminclientes')}}">Clientes</a>
+                        <a class="nav-link active" aria-current="page" href="{{url_for('adminPagos')}}">Gestión de pagos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{url_for('admineventos')}}">Eventos</a>
+                        <a class="nav-link active" aria-current="page" href="{{url_for('admineventos')}}">Gestión de eventos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{url_for('adminorganizadores')}}">Organizadores</a>
+                        <a class="nav-link active" aria-current="page" href="{{url_for('adminclientes')}}">Lista de Clientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('adminorganizadores')}}">Lista de Organizadores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('adminadmins')}}">Lista de Administradores</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{url_for('adminreportes')}}">Reportes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{url_for('adminadmins')}}">Administradores</a>
+                        <a class="nav-link active" aria-current="page" href="{{url_for('actualizarDatos')}}">Mis datos</a>
                     </li>
                     <li class="nav-item ms-auto">
-                        <a class="nav-link" href="/">Salir</a>
+                        <a class="nav-link" href="{{url_for('logout')}}">Salir</a>
                     </li>
                 </ul>
             </div>
