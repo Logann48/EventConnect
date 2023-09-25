@@ -3,7 +3,7 @@ from werkzeug.utils import secure_filename
 from config import config
 from flask_mysqldb import MySQL
 from models.ModelUser import ModelUser
-from models.entities.User import User, AddUser, Foto,Evento,Compra, Pago, Entrada
+from models.entities.User import User, AddUser, Foto,Evento,Compra, Pago, Entrada,PrecioEntrada
 from flask_wtf.csrf import CSRFProtect
 from datetime import datetime
 from flask_login import LoginManager,login_user, logout_user,login_required,current_user
@@ -263,15 +263,20 @@ def crudorganizador():
 def registroevento():
     if 'user_type' in session and session['user_type'] == 2|3:
         if request.method=='POST':
+            tipo = []
+            precio = []
             estado=1
             date_str = request.form['myDate']  # 'YYYY-MM-DD'
             time_str = request.form['horaEv']  # 'HH:MM'
-            # Combine date and time into a single string
             datetime_str = date_str + ' ' + time_str
-            # Convert the combined string into a datetime object
             datetime_obj = datetime.strptime(datetime_str, '%Y-%m-%d %H:%M')
+            for i in range(1,4):
+                tipo = request.form['tipo{}'.format(i)]
+                precio = request.form['precio{}'.format(i)]
+
+            Entradas=PrecioEntrada(tipo,precio)
             Nevento=Evento(request.form['nombreEv'], datetime_obj, request.form['descripEv'], estado)
-            guardarU=ModelUser.guardarE(db,Nevento,current_user.cedula)
+            guardarU=ModelUser.guardarE(db,Nevento,current_user.cedula,Entradas)
             if guardarU:
                 session['id_evento'] = guardarU
                 flash("Registro Exitoso")

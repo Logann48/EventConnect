@@ -68,3 +68,8 @@ class Entrada():
     def __init__(self,cantidades,precios) -> None:
         self.cantidades=cantidades
         self.precios=precios
+
+class PrecioEntrada():
+    def __init__(self,nombre,precio) -> None:
+        self.precio=precio
+        self.nombre=nombre

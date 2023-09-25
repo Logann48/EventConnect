@@ -6,7 +6,7 @@ const expresiones = {
 	horaEv: /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/,
 	descripEv: /^[a-zA-Z0-9\s\.\,\;\:\-ñÑ]{1,150}$/, // Permitir la letra "ñ"
 	tipo: /^[a-zA-Z0-9]{1,15}$/,
-	entrada: /^\d+(\.\d{1,2})?$/
+	precio: /^\d+(\.\d{1,2})?$/
 }
 
 const campos = {
@@ -30,13 +30,13 @@ const validarFormulario = (e) => {
 			validarFecha(e.target, 'myDate');
 		break;
 		default:
-			// Para los campos "tipo" y "entrada", iteramos a través de cada uno
+			// Para los campos "tipo" y "precio", iteramos a través de cada uno
 			for (let i = 1; i <= 4; i++) {
 				if (e.target.name === "tipo" && e.target.id === `tipo${i}`) {
 					validarCampo(expresiones.tipo, e.target, `tipo${i}`);
 				}
-				if (e.target.name === "entrada" && e.target.id === `entrada${i}`) {
-					validarCampo(expresiones.entrada, e.target, `entrada${i}`);
+				if (e.target.name === "precio" && e.target.id === `precio${i}`) {
+					validarCampo(expresiones.precio, e.target, `precio${i}`);
 				}
 			}
 		break;
@@ -84,9 +84,9 @@ formulario.addEventListener('submit', (e) => {
 	let allValid = Object.values(campos).every((campo) => campo === true);
 	for (let i = 1; i <= 4; i++) {
 		allValid = allValid && document.getElementById(`tipo${i}`).classList.contains('nombre_correcto');
-		allValid = allValid && document.getElementById(`entrada${i}`).classList.contains('nombre_correcto');
+		allValid = allValid && document.getElementById(`precio${i}`).classList.contains('nombre_correcto');
 		allValid = allValid && document.getElementById(`tipo${i}`).value !== '';
-		allValid = allValid && document.getElementById(`entrada${i}`).value !== '';
+		allValid = allValid && document.getElementById(`precio${i}`).value !== '';
 	}
 	if (!allValid) {
 		e.preventDefault();

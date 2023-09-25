@@ -66,21 +66,30 @@ class ModelUser():
             raise Exception(ex)
         
     @classmethod   
-    def guardarE(self,db,Nevento,cedula_organizador):
+    def guardarE(self,db,Nevento,cedula_organizador,Entradas):
         try:
             cursor=db.connection.cursor()
-            sql = ("INSERT INTO `eventos` (`cedula`,`nombre`, `fecha`, `descripcion`, `estado`)"
-        "VALUES (%s, %s, %s, %s, %s)")
+            cursor1=db.connection.cursor()
+            cursor2=db.connection.cursor()
+            sql = ("INSERT INTO `eventos` (`cedula`,`nombre`, `fecha_Evento`, `descripcion`, `estado`)"
+            "VALUES (%s, %s, %s, %s, %s)")
             data = (cedula_organizador, Nevento.nombre, Nevento.Fecha, Nevento.descripcion,Nevento.estado)
             cursor.execute(sql, data)
-            db.connection.commit()
 
-            sql="SELECT id_Evento FROM eventos WHERE nombre = '{}'".format(Nevento.nombre)
-            cursor.execute(sql)
-            row=cursor.fetchone()
+            sql1 = ("INSERT INTO `tipo_entrada` (`tipo`,`Precio`)"
+            "VALUES (%s,%s)")
+            data1 = (Entradas.nombre,Entradas.precio)
+            cursor1.execute(sql1, data1)
+            cursor1.execute("SELECT LAST_INSERT_ID() AS id_TipoEntrada")
+            result = cursor1.fetchone()[0]
+            print(result)
+            sql2 = ("INSERT INTO `entrada_evento` (`id_Evento`,`Precio`)"
+            "VALUES (%s,%s)")
+            data2 = (Entradas.nombre,Entradas.precio)
+            cursor2.execute(sql2, data2)
             db.connection.commit()
-            if row != None:
-                return row[0]
+            if result != None:
+                return result
             else:
                 return None
         except Exception as ex:
