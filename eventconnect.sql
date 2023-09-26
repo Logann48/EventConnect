@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-09-2023 a las 21:57:02
+-- Tiempo de generación: 26-09-2023 a las 21:21:55
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -43,7 +43,8 @@ CREATE TABLE `compra` (
 INSERT INTO `compra` (`id_Compra`, `cedula`, `id_Evento`, `id_DetallePago`) VALUES
 (12, 28019006, 1, 28),
 (13, 28019006, 1, 29),
-(14, 28019006, 1, 30);
+(14, 28019006, 1, 30),
+(15, 28019006, 1, 31);
 
 -- --------------------------------------------------------
 
@@ -69,7 +70,8 @@ INSERT INTO `detalle_compra` (`id_DetalleCompra`, `id_Compra`, `precio`, `id_Tip
 (15, 13, 5000, 1, 9),
 (16, 13, 6000, 2, 0),
 (17, 13, 7000, 3, 0),
-(18, 14, 6000, 2, 11);
+(18, 14, 6000, 2, 11),
+(19, 15, 6000, 2, 11);
 
 -- --------------------------------------------------------
 
@@ -101,7 +103,8 @@ INSERT INTO `detalle_pago` (`id_DetallePago`, `cedula`, `fecha_Compra`, `Nombre_
 (3, 28019006, '2023-09-22 18:39:36', 'nahomy', 15884430, 'Transferencia', '2023-09-20', 2147483647, 54665465, 350, 'caps/Acer_Wallpaper_01_3840x2400.jpg'),
 (28, 28019006, '2023-09-22 22:39:14', 'calo', 5248071, 'Transferencia', '2023-09-27', 132131231, 2147483647, 350, 'caps/Acer_Wallpaper_01_3840x2400.jpg'),
 (29, 28019006, '2023-09-23 14:10:12', 'joan', 897987967, 'Pago Movil', '2023-09-22', 2147483647, 9876543, 251, 'caps/Acer_Wallpaper_05_3840x2400.jpg'),
-(30, 28019006, '2023-09-23 14:19:22', 'cratos', 2147483647, 'Pago Movil', '2023-11-06', 2147483647, 2147483647, 109, 'caps/Acer_Wallpaper_02_3840x2400.jpg');
+(30, 28019006, '2023-09-23 14:19:22', 'cratos', 2147483647, 'Pago Movil', '2023-11-06', 2147483647, 2147483647, 109, 'caps/Acer_Wallpaper_02_3840x2400.jpg'),
+(31, 28019006, '2023-09-23 16:50:11', 'ghghgjhgj', 12345698, 'Pago Movil', '2023-06-01', 98765777, 2147483647, 124, 'caps/Acer_Wallpaper_01_3840x2400.jpg');
 
 -- --------------------------------------------------------
 
@@ -123,7 +126,9 @@ CREATE TABLE `entrada_evento` (
 INSERT INTO `entrada_evento` (`id_Entrada_Evento`, `id_Evento`, `id_TipoEntrada`, `Cantidad_Disp`) VALUES
 (3, 1, 1, 100),
 (4, 1, 2, 101),
-(5, 1, 3, 102);
+(5, 1, 3, 102),
+(11, 47, 22, 100),
+(12, 47, 23, 100);
 
 -- --------------------------------------------------------
 
@@ -135,7 +140,7 @@ CREATE TABLE `eventos` (
   `id_Evento` int(11) NOT NULL,
   `cedula` int(11) NOT NULL,
   `nombre` varchar(300) NOT NULL,
-  `fecha` datetime NOT NULL,
+  `fecha_Evento` datetime NOT NULL,
   `descripcion` longtext NOT NULL,
   `estado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -144,15 +149,15 @@ CREATE TABLE `eventos` (
 -- Volcado de datos para la tabla `eventos`
 --
 
-INSERT INTO `eventos` (`id_Evento`, `cedula`, `nombre`, `fecha`, `descripcion`, `estado`) VALUES
+INSERT INTO `eventos` (`id_Evento`, `cedula`, `nombre`, `fecha_Evento`, `descripcion`, `estado`) VALUES
 (1, 8064454, 'caramelos', '2023-09-20 19:42:00', 'asdasfasfafasdasdasd', 1),
 (2, 8064454, 'sifuentes', '2023-09-20 20:46:00', 'pinpinpinpum', 1),
 (3, 8064454, 'tribilines', '2023-09-20 20:46:00', 'pinpinpinpum', 1),
 (4, 8064454, 'cromozoma', '2023-09-21 20:46:00', 'pinpinpinpumadsssssssssssssssss', 1),
 (9, 8064454, 'alogodon de azucar1', '2023-09-29 21:40:00', 'fghdjhghjghjfghjf', 1),
-(10, 8064454, 'alogodon ', '2023-09-29 21:40:00', 'fghdjhghjghjfghjf', 1),
 (11, 28019006, 'guaco', '2023-09-23 18:07:00', 'asdasdasdasdasd', 1),
-(13, 28019006, 'mesoneros', '2023-09-29 13:12:00', 'asdadasda', 1);
+(13, 28019006, 'mesoneros', '2023-09-29 13:12:00', 'asdadasda', 1),
+(47, 28019006, 'a', '2023-09-28 13:14:00', 'a', 1);
 
 -- --------------------------------------------------------
 
@@ -220,7 +225,9 @@ CREATE TABLE `tipo_entrada` (
 INSERT INTO `tipo_entrada` (`id_TipoEntrada`, `tipo`, `Precio`) VALUES
 (1, 'general', 5000),
 (2, 'premium', 6000),
-(3, 'ultra', 7000);
+(3, 'ultra', 7000),
+(22, 'b', 1),
+(23, 'c', 2);
 
 -- --------------------------------------------------------
 
@@ -322,31 +329,31 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `compra`
 --
 ALTER TABLE `compra`
-  MODIFY `id_Compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_Compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_compra`
 --
 ALTER TABLE `detalle_compra`
-  MODIFY `id_DetalleCompra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id_DetalleCompra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_pago`
 --
 ALTER TABLE `detalle_pago`
-  MODIFY `id_DetallePago` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id_DetallePago` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT de la tabla `entrada_evento`
 --
 ALTER TABLE `entrada_evento`
-  MODIFY `id_Entrada_Evento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_Entrada_Evento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `eventos`
 --
 ALTER TABLE `eventos`
-  MODIFY `id_Evento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_Evento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT de la tabla `fotos`
@@ -358,7 +365,7 @@ ALTER TABLE `fotos`
 -- AUTO_INCREMENT de la tabla `tipo_entrada`
 --
 ALTER TABLE `tipo_entrada`
-  MODIFY `id_TipoEntrada` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_TipoEntrada` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Restricciones para tablas volcadas

@@ -62,24 +62,23 @@
     <table class="table table-bordered table-striped" id="tabla-test">
         <thead>
         <tr>
-            <th>Organizador</th>
+            <th>organizador</th>
             <th>Nombre</th>
-            <th>Fecha y hora</th>
+            <th>Fecha</th>
             <th>Descripción</th>
             <th>Estado</th>
             <th>Opciones</th>
-            <th></th>
         </tr>
         </thead>
         <tbody id="myTable">
 
-          {% for evento in eventos %}
+          {% for usuario in usuarios %}
           <tr>
-              <td>{{ evento.1 }}</td>
-              <td>{{ evento.2 }}</td>
-              <td>{{ evento.3 }}</td>
-              <td>{{ evento.4 }}</td>
-              <td>{{ evento.5 }}</td>
+              <td>{{ usuario.cedula }}</td>
+              <td>{{ usuario.nombre }}</td>
+              <td>{{ usuario.apellido }}</td>
+              <td>{{ usuario.telefono }}</td>
+              <td>{{ usuario.correo }} {{ usuario.direccion }}</td>
               <td><button class="btn btn-danger btn-sm">Inhabilitar</button></td>
               <td><button class="btn btn-warning btn-sm">Modificar</button></td>
           </tr>

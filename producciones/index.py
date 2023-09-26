@@ -386,11 +386,7 @@ def administrativo():
 @login_required
 def admineventos():
     if 'user_type' in session and session['user_type'] == 3:
-        cur = db.connection.cursor()
-        cur.execute('SELECT * FROM eventos')
-        dataEvent = cur.fetchall()
-        db.connection.commit()
-        return render_template('admineventos.html', eventos=dataEvent)
+        return render_template('admineventos.html')
     else:
         return redirect(url_for('login'))
     
