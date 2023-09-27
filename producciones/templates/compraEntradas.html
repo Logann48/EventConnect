@@ -14,33 +14,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Paytone+One&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid" style="background-color: white;">
-      <a class="navbar-brand" href="{{url_for('usuario')}}">Inicio</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{url_for('boletos')}}">Eventos</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="">Mis entradas</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{url_for('actualizarDatos')}}">Mis datos</a>
-          </li>
-          <li class="nav-item ms-auto">
-            <a class="nav-link" href="{{url_for('logout')}}">Salir</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
+  
     <div class="container" style="height: 300px;">
-        <div class="screen" style="height: 1000px; width: 600px; margin-top: 100px;">
+        <div class="screen" style="height: 890px; width: 600px; margin-top: 10px;">
             <div class="screen__content">
                 <h2 style="text-align: center; margin-left: 12px;">Formulario de compra para {{xdd.1}}</h2>
                 <form class="register" id="formulario" action="{{url_for('compra')}}">
@@ -64,6 +40,8 @@
                         {% endfor %}
                         <p style="font-size: x-large;"><strong>Total:</strong></p>
                         <button type="submit" class="button login__submit" id="confirmPago" style="margin-top: 5%; margin-left: 150px; height: 50px; width: 200px;">Confirmar compra</button>
+                        <br>
+                        <a class="button login__submit" href="{{url_for('boletos')}}" type="button" style="margin-top: 5%; margin-left: 150px; height: 50px; width: 200px;">Volver</a> 	
                         <hr>
                     </div>			
                 </form>

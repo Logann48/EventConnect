@@ -51,14 +51,12 @@
         </div>    
       </div>    
     </div>
-    <br>
-    <br>
     
     <div>
     {% block body %}
-    <div class="container" style="width: 900px; height: 700;">
+    <div class="container" style="width: 1600px; height: 750px;">
       <h1 class="card-price" style="text-align: center; padding-top: 30px; font-size: xx-large;">Eventos disponibles</h1>
-      <div class="swiper swiperPag">
+      <div class="swiper swiperPag" style="width: 1200px;">
         <div class="swiper-wrapper">
             {% for evento in eventos %}
           <div class="swiper-slide"> 
@@ -100,7 +98,6 @@
             {% endfor %}
         </div>
       <div class="swiper-pagination"></div>
-      <div class="swiper-scrollbar"></div>
       <div class="swiper-keyboard"></div>
       <div class="swiper-mousewheel"></div>
       </div>
@@ -131,9 +128,9 @@
 
   new Swiper('.swiperPag', {
 
-    slidesPerView: 3,
+    slidesPerView: 2,
     effect: "slides",
-    direction: 'vertical',
+    direction: 'horizontal',
     loop: false,
     Mousewheel: true,
 

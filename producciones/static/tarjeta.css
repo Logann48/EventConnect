@@ -93,11 +93,10 @@
   }
 
   .swiperPag{
-    width: 800px;
-    height: 2000px;
+    width: 700px;
+    height: 640px;
   }
 
   .swiperPag .swiper-pagination{
-    padding-right: 790px;
     --swiper-pagination-bullet-size: 12px;
   }
