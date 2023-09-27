@@ -83,7 +83,22 @@
                     <td>{{ pago.8 }}</td>
                     <td>{{ pago.9 }}</td>
                     <td><img src="data:{{ pago.10 }}" alt="Image"></td>
-                    <td><button class="btn btn-primary btn-sm">Confirmarr</button></td>
+                    <td>
+                        <form action="{{url_for('tablaPago1')}}" method="post">
+                        <input type="hidden" name="fecha" value="{{ pago.2 }}">
+                        <input type="hidden" name="nombre" value="{{ pago.3 }}">
+                        <input type="hidden" name="cedula" value="{{ pago.4 }}">
+                        <input type="hidden" name="metodo" value="{{ pago.5 }}">
+                        <input type="hidden" name="fechaPago" value="{{ pago.6 }}">
+                        <input type="hidden" name="referencia" value="{{ pago.7 }}">
+                        <input type="hidden" name="telefonoCuenta" value="{{ pago.8 }}">
+                        <input type="hidden" name="monto" value="{{ pago.9 }}">
+                        <input type="hidden" name="captura" value="{{ pago.10 }}">
+                        <input type="hidden" name="estado" value="{{ pago.11 }}">
+                        <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
+                        <button type="submit" class="btn btn-primary btn-sm">Confirmar</button>
+                    </form>
+                    </td>
                 </tr>
                 {% endfor %}
                 

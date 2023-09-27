@@ -50,46 +50,45 @@
     </nav>
  
     
-  <div class="container">
-    <h2>Lista de Eventos</h2>
-    <div>
-        <div class="input-group flex-nowrap">
-          
-        </div>
+    <div class="container">
+        <h2>Lista de Eventos</h2>
+        <table class="table table-bordered table-striped" id="tabla-test">
+            <thead>
+                <tr>
+                    <th>Organizador</th>
+                    <th>Nombre</th>
+                    <th>Fecha y hora</th>
+                    <th>Descripción</th>
+                    <th>Estado</th>
+                    <th>Opciones</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+                {% for evento in eventos %}
+                <tr>
+                    <td>{{ evento.1 }}</td>
+                    <td>{{ evento.2 }}</td>
+                    <td>{{ evento.3 }}</td>
+                    <td>{{ evento.4 }}</td>
+                    <td>{{ evento.5 }}</td>
+                    <td>
+                        <form action="{{url_for('tablaEvento2')}}" method="post">
+                            <input type="hidden" name="organizer" value="{{ evento.1 }}">
+                            <input type="hidden" name="nombre" value="{{ evento.2 }}">
+                            <input type="hidden" name="fecha_hora" value="{{ evento.3 }}">
+                            <input type="hidden" name="descripcion" value="{{ evento.4 }}">
+                            <input type="hidden" name="estado" value="{{ evento.5 }}">
+                            <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
+                            <button type="submit" class="btn btn-danger btn-sm">Inhabilitar</button>
+                        </form>
+                    </td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-   
-    <br>
-    <table class="table table-bordered table-striped" id="tabla-test">
-        <thead>
-        <tr>
-            <th>organizador</th>
-            <th>Nombre</th>
-            <th>Fecha</th>
-            <th>Descripción</th>
-            <th>Estado</th>
-            <th>Opciones</th>
-        </tr>
-        </thead>
-        <tbody id="myTable">
-
-          {% for usuario in usuarios %}
-          <tr>
-              <td>{{ usuario.cedula }}</td>
-              <td>{{ usuario.nombre }}</td>
-              <td>{{ usuario.apellido }}</td>
-              <td>{{ usuario.telefono }}</td>
-              <td>{{ usuario.correo }} {{ usuario.direccion }}</td>
-              <td><button class="btn btn-danger btn-sm">Inhabilitar</button></td>
-              <td><button class="btn btn-warning btn-sm">Modificar</button></td>
-          </tr>
-         {% endfor %}         
-        </tbody>
-    </table>
-</div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
 
 
   <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>

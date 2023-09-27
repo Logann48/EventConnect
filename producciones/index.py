@@ -106,7 +106,7 @@ def registrar():
 @app.route('/compraentradas', methods=['GET','POST'])
 @login_required
 def cargarTipoEntradas():
-    if 'user_type' in session and session['user_type'] == 1|3:
+    if 'user_type' in session and session['user_type'] == 1 or 2 or 3:
         if request.method == 'POST':
             xd = request.form['id_Evento']
             session['id_Evento'] = xd
@@ -124,7 +124,7 @@ def cargarTipoEntradas():
 @app.route('/compra')
 @login_required
 def compra():
-    if 'user_type' in session and session['user_type'] == 1|3:
+    if 'user_type' in session and session['user_type'] == 1 or 2 or 3:
         id_Evento = session['id_Evento']
         cur= db.connection.cursor()
         cur.execute("""SELECT COUNT(tipo) FROM tipo_entrada INNER JOIN entrada_evento ON tipo_entrada.id_TipoEntrada=entrada_evento.id_TipoEntrada WHERE entrada_evento.id_Evento = '{}'""".format(id_Evento))
@@ -168,9 +168,9 @@ def cusuario():
 @app.route('/boletos')
 @login_required
 def boletos():
-    if 'user_type' in session and session['user_type'] == 1|3:
+    if 'user_type' in session and session['user_type'] == 1 or 2 or 3:
         cur = db.connection.cursor()
-        cur.execute('SELECT * FROM eventos')
+        cur.execute('SELECT * FROM eventos WHERE estado = 1')
         dataEvent = cur.fetchall()
         db.connection.commit()
         return render_template('boletos.html', eventos = dataEvent)
@@ -180,14 +180,14 @@ def boletos():
 @app.route('/boletos', methods=['GET','POST'])
 @login_required
 def busquedaBoletos():
-    if 'user_type' in session and session['user_type'] == 1|3:
+    if 'user_type' in session and session['user_type'] == 1 or 2 or 3:
         search_performed = False
         resultBusqueda = None
         if request.method == "POST":
             search_performed = True
             search = request.form['barraBusqueda']
             cur = db.connection.cursor()
-            cur.execute("SELECT * FROM eventos WHERE nombre LIKE '%" + search + "%' ORDER BY id_Evento DESC")
+            cur.execute("SELECT * FROM eventos WHERE nombre LIKE '%" + search + "%' AND estado = 1 ORDER BY id_Evento DESC")
             resultBusqueda = cur.fetchall()
             db.connection.commit()
         return render_template('boletosResult.html', resultado = resultBusqueda, search_performed=search_performed)
@@ -201,7 +201,7 @@ def busquedaBoletos():
 
 @app.route('/registropago', methods=['GET','POST'])
 def registropago():
-    if 'user_type' in session and session['user_type'] == 1|3:
+    if 'user_type' in session and session['user_type'] == 1 or 2 or 3:
         check1 = False  # Define check1 here
         if request.method == "POST":
             if 'file' not in request.files:
@@ -239,7 +239,7 @@ def registropago():
     else:
         return redirect(url_for('login'))
 
-##############
+############################################################################
 
 @app.route('/organizador')
 @login_required
@@ -261,7 +261,7 @@ def crudorganizador():
 @app.route('/registroevento', methods=['GET','POST'])
 @login_required
 def registroevento():
-    if 'user_type' in session and session['user_type'] == 2|3:
+    if 'user_type' in session and session['user_type'] == 2:
         if request.method=='POST':
             tipo = []
             precio = []
@@ -318,7 +318,7 @@ def imagenesevento():
 @app.route('/actualizardatos')
 @login_required
 def actualizarDatos():
-    if 'user_type' in session and session['user_type'] == 1|2|3:
+    if 'user_type' in session and session['user_type'] == 1 or 2 or 3:
         cedula = current_user.cedula
         cur = db.connection.cursor()
         cur.execute("SELECT * FROM usuario WHERE cedula = %s", (cedula,))
@@ -331,7 +331,7 @@ def actualizarDatos():
 @app.route('/',  methods=['GET','POST'])
 @login_required
 def actualDatos():
-    if 'user_type' in session and session['user_type'] == 1|2|3:
+    if 'user_type' in session and session['user_type'] == 1 or 2 or 3:
         if request.method=='POST':
 
             cedula = request.form['cedula']
@@ -348,7 +348,6 @@ def actualDatos():
             """
             cur.execute(update_query, (correo, telefono, direccion, cedula))
             db.connection.commit()
-            flash('Datos cambiados con éxito', 'success')
         return render_template('actualizarExito.html')
     else:
         return redirect(url_for('login'))
@@ -358,20 +357,68 @@ def actualDatos():
 def adminPagos():
     if 'user_type' in session and session['user_type'] == 3:
         cur = db.connection.cursor()
-        cur.execute('SELECT * FROM detalle_pago')
+        cur.execute('SELECT * FROM detalle_pago WHERE estado = 0')
         pagoDetail = cur.fetchall()
         db.connection.commit()
         return render_template('adminPagos.html', pagos=pagoDetail)
     else:
         return redirect(url_for('login'))
+
+@app.route('/adminPagos', methods=['GET','POST'])
+@login_required
+def tablaPago1():
+    if 'user_type' in session and session['user_type'] == 3:
+        if request.method == "POST":
+            fecha = request.form['fecha']
+            nombre = request.form['nombre']
+            cedula = request.form['cedula']
+            metodo = request.form['metodo']
+            fechaPago = request.form['fechaPago']
+            referencia = request.form['referencia']
+            telefonoCuenta = request.form['telefonoCuenta']
+            monto = request.form['monto']
+            captura = request.form['captura']
+            estado = request.form['estado']
+
+            cur = db.connection.cursor()
+            cur.execute("UPDATE detalle_pago SET estado = 1 WHERE fecha_Compra = %s AND Nombre_Apellido = %s AND cedula_Pagador = %s AND Metodo_Pago = %s AND fecha_Pago = %s AND Referencia_Pago = %s AND telefono_Cuenta = %s AND monto = %s AND id_Capture = %s",
+            (fecha,nombre,cedula,metodo,fechaPago,referencia,telefonoCuenta,monto,captura))
+            db.connection.commit()
+        return render_template('ConPagoAdmin.html')
+    else:
+        return redirect(url_for('login'))
 #####################################################################################
-
-
 @app.route('/gestionevento')
 @login_required
-def crearevento():
-    return render_template('gestionevento.html')
-    
+def gestionevento():
+    if 'user_type' in session and session['user_type'] == 2:
+        cur = db.connection.cursor()
+        cur.execute('SELECT * FROM eventos WHERE estado = 1')
+        dataEvent = cur.fetchall()
+        db.connection.commit()
+        return render_template('gestionevento.html', eventos=dataEvent)
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/gestionevento', methods=['GET','POST'])
+@login_required
+def tablaEvento1():
+    if 'user_type' in session and session['user_type'] == 2:
+        if request.method == "POST":
+            nombre = request.form['nombre']
+            fecha_hora = request.form['fecha_hora']
+            descripcion = request.form['descripcion']
+            estado = request.form['estado']
+
+            cur = db.connection.cursor()
+            cur.execute("UPDATE eventos SET estado = 0 WHERE nombre = %s AND fecha = %s AND descripcion = %s AND estado = %s",
+            (nombre, fecha_hora, descripcion, estado))
+            db.connection.commit()
+        return render_template('InhaEvExito.html')
+    else:
+        return redirect(url_for('login'))
+
+####################################################################################   
 
 @app.route('/administrativo')
 @login_required
@@ -381,29 +428,69 @@ def administrativo():
     else:
         return redirect(url_for('login'))
     
+#####################################################################################
 
 @app.route('/admineventos')
 @login_required
 def admineventos():
     if 'user_type' in session and session['user_type'] == 3:
-        return render_template('admineventos.html')
+        cur = db.connection.cursor()
+        cur.execute('SELECT * FROM eventos WHERE estado = 1')
+        dataEvent = cur.fetchall()
+        db.connection.commit()
+        return render_template('admineventos.html', eventos=dataEvent)
     else:
         return redirect(url_for('login'))
-    
+
+@app.route('/admineventos', methods=['GET','POST'])
+@login_required
+def tablaEvento2():
+    if 'user_type' in session and session['user_type'] == 3:
+        if request.method == "POST":
+            nombre = request.form['nombre']
+            fecha_hora = request.form['fecha_hora']
+            descripcion = request.form['descripcion']
+            estado = request.form['estado']
+
+            cur = db.connection.cursor()
+            cur.execute("UPDATE eventos SET estado = 0 WHERE nombre = %s AND fecha = %s AND descripcion = %s AND estado = %s",
+            (nombre, fecha_hora, descripcion, estado))
+            db.connection.commit()
+        return render_template('InhaEvAdminExito.html')
+    else:
+        return redirect(url_for('login'))
+
+############################################################################
 
 @app.route('/adminorganizadores')
 @login_required
 def adminorganizadores():
     if 'user_type' in session and session['user_type'] == 3:
         cur = db.connection.cursor()
-        cur.execute('SELECT * FROM usuario INNER JOIN login ON usuario.cedula = login.cedula WHERE login.tipo = "2"')
+        cur.execute('SELECT * FROM usuario INNER JOIN login ON usuario.cedula = login.cedula WHERE login.tipo = "2" AND login.estado = 1')
         dataUsers = cur.fetchall()
         db.connection.commit()
         return render_template('adminorganizadores.html', usuarios = dataUsers)
     else:
         return redirect(url_for('login'))
-    
 
+@app.route('/adminorganizadores', methods=['GET','POST'])
+@login_required
+def tablaOrg():
+    if 'user_type' in session and session['user_type'] == 3:
+        if request.method == "POST":
+            cedula = request.form['cedula']
+
+            cur = db.connection.cursor()
+            cur.execute("UPDATE login SET estado = 0 WHERE cedula = %s",
+            (cedula,))
+            db.connection.commit()
+        return render_template('InhaOrgExito.html')
+    else:
+        return redirect(url_for('login'))
+
+###########################################################################
+    
 @app.route('/adminclientes')
 @login_required
 def adminclientes():
@@ -416,18 +503,34 @@ def adminclientes():
     else:
         return redirect(url_for('login'))
 
-
+#################################################################################################
 @app.route('/adminadmins')
 @login_required
 def adminadmins():
     if 'user_type' in session and session['user_type'] == 3:
         cur = db.connection.cursor()
-        cur.execute('SELECT * FROM usuario INNER JOIN login ON usuario.cedula = login.cedula WHERE login.tipo = "3"')
+        cur.execute('SELECT * FROM usuario INNER JOIN login ON usuario.cedula = login.cedula WHERE login.tipo = "3" AND login.estado = "1"')
         dataUsers = cur.fetchall()
         db.connection.commit()
         return render_template('adminadmins.html', usuarios = dataUsers)
     else:
         return redirect(url_for('login'))
+    
+@app.route('/adminadmins', methods=['GET','POST'])
+@login_required
+def tablaAdmin():
+    if 'user_type' in session and session['user_type'] == 3:
+        if request.method == "POST":
+            cedula = request.form['cedula']
+
+            cur = db.connection.cursor()
+            cur.execute("UPDATE login SET estado = 0 WHERE cedula = %s",
+            (cedula,))
+            db.connection.commit()
+        return render_template('InhaAdminExito.html')
+    else:
+        return redirect(url_for('login'))
+###############################################################################################
     
 @app.route('/registrarorganizador', methods=['GET','POST'])
 def registrarorganizador():

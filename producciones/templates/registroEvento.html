@@ -13,26 +13,23 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{url_for('administrativo')}}">Inicio</a>
+            <a class="navbar-brand" href="{{url_for('organizador')}}">Inicio</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{url_for('adminclientes')}}">Clientes</a>
+                        <a class="nav-link active" aria-current="page" href="{{url_for('gestionevento')}}">Gestión de eventos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{url_for('admineventos')}}">Eventos</a>
+                        <a class="nav-link active" aria-current="page" href="{{url_for('registroevento')}}">Registrar evento</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{url_for('adminorganizadores')}}">Organizadores</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{url_for('adminreportes')}}">Reportes</a>
+                        <a class="nav-link active" aria-current="page" href="{{url_for('actualizarDatos')}}">Mis datos</a>
                     </li>
                     <li class="nav-item ms-auto">
-                        <a class="nav-link" href="/">Salir</a>
+                        <a class="nav-link" href="{{url_for('logout')}}">Salir</a>
                     </li>
                 </ul>
             </div>
@@ -83,18 +80,26 @@
                                 <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
                                 <div class="row">
                                     <div class="col-sm">
-                                        <p>Tipos de entrada del evento</p>
+                                        <p><strong>Tipos de entrada del evento</strong></p>
                                         <input type="text" name="tipo1" id="tipo1" value="" class="login__input" placeholder="Ejemplo: General" style="margin-bottom: 10%;">
                                         <input type="text" name="tipo2" id="tipo2" value="" class="login__input" placeholder="Ejemplo: Vip" style="margin-bottom: 10%;">
                                         <input type="text" name="tipo3" id="tipo3" value="" class="login__input" placeholder="Ejemplo: Vip+" style="margin-bottom: 10%;">
                                         <input type="text" name="tipo4" id="tipo4" value="" class="login__input" placeholder="Ejemplo: Ultra" style="margin-bottom: 10%;">
                                     </div>
                                     <div class="col-sm">
-                                        <p>Precios ($)</p>
+                                        <p><strong>Precios ($)</strong></p>
+                                        <br>
                                         <input type="number" name="precio1" min="1" id="precio1" class="login__input" style="margin-bottom: 10%;">
                                         <input type="number" name="precio2" min="1" id="precio2" class="login__input" style="margin-bottom: 10%;">
                                         <input type="number" name="precio3" min="1" id="precio3" class="login__input" style="margin-bottom: 10%;">
                                         <input type="number" name="precio4" min="1" id="precio4" class="login__input" style="margin-bottom: 10%;">
+                                    </div>
+                                    <div class="col-sm">
+                                        <p><strong>Cantidad de entradas por tipo</strong></p>
+                                        <input type="number" name="CEntradas1" min="0" id="Centradas1" class="login__input" style="margin-bottom: 10%;">
+                                        <input type="number" name="CEntradas2" min="0" id="Centradas2" class="login__input" style="margin-bottom: 10%;">
+                                        <input type="number" name="CEntradas3" min="0" id="Centradas3" class="login__input" style="margin-bottom: 10%;">
+                                        <input type="number" name="CEntradas4" min="0" id="Centradas4" class="login__input" style="margin-bottom: 10%;">
                                     </div>
                                 </div>
                                 <hr>

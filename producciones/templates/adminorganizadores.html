@@ -76,7 +76,18 @@
                   <td>{{ usuario.3 }}</td>
                   <td>{{ usuario.4 }}</td>
                   <td>{{ usuario.5 }}</td>
-                  <td><button class="btn btn-danger btn-sm">Deshabilitar</button></td>
+                  <td>
+                    <form action="{{url_for('tablaOrg')}}" method="post">
+                    <input type="hidden" name="cedula" value="{{ usuario.0 }}">
+                    <input type="hidden" name="nombre" value="{{ usuario.1 }}">
+                    <input type="hidden" name="apellido" value="{{ usuario.2 }}">
+                    <input type="hidden" name="telefono" value="{{ usuario.3 }}">
+                    <input type="hidden" name="email" value="{{ usuario.4 }}">
+                    <input type="hidden" name="direccion" value="{{ usuario.5 }}">
+                    <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
+                    <button type="submit" class="btn btn-danger btn-sm">Inhabilitar</button>
+                    </form>
+                  </td>
               </tr>
               {% endfor %}
               

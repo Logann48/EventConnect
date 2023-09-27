@@ -52,41 +52,48 @@
     <div class="container">
         <h2>Lista de Administradores</h2>
         <div class="input-group flex-nowrap">
-            <a href="{{url_for('registraradministrador')}}" class="btn btn-primary btn-sm" style="margin-left: 805px; padding: 15px; padding-bottom: 70px;">Agregar Nuevo Administrador</a>
+          <a href="{{url_for('registrarorganizador')}}" class="btn btn-primary btn-sm" style="margin-left: 805px; padding: 15px; padding-bottom: 70px; width: 250px;">Agregar Nuevo Organizador</a>
         </div>
-        <div class="input-group flex-nowrap">
-          </div>
-
         <br>
         <table class="table table-bordered table-striped" id="tabla-test">
-            <thead>
-                <tr>
-                    <th>Cédula</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Teléfono</th>
-                    <th>Email</th>
-                    <th>Dirección</th>
-                    <th>Opción</th>
-                </tr>
-            </thead>
-            <tbody id="myTable">
-                
-                {% for usuario in usuarios %}
-                <tr>
-                    <td>{{ usuario.0 }}</td>
-                    <td>{{ usuario.1 }}</td>
-                    <td>{{ usuario.2 }}</td>
-                    <td>{{ usuario.3 }}</td>
-                    <td>{{ usuario.4 }}</td>
-                    <td>{{ usuario.5 }}</td>
-                    <td><button class="btn btn-danger btn-sm">Deshabilitar</button></td>
-                </tr>
-                {% endfor %}
-                
-            </tbody>
-        </table>
-    </div>
+          <thead>
+              <tr>
+                  <th>Cédula</th>
+                  <th>Nombre</th>
+                  <th>Apellido</th>
+                  <th>Teléfono</th>
+                  <th>Email</th>
+                  <th>Dirección</th>
+                  <th>Opción</th>
+              </tr>
+          </thead>
+          <tbody id="myTable">
+              
+              {% for usuario in usuarios %}
+              <tr>
+                  <td>{{ usuario.0 }}</td>
+                  <td>{{ usuario.1 }}</td>
+                  <td>{{ usuario.2 }}</td>
+                  <td>{{ usuario.3 }}</td>
+                  <td>{{ usuario.4 }}</td>
+                  <td>{{ usuario.5 }}</td>
+                  <td>
+                    <form action="{{url_for('tablaAdmin')}}" method="post">
+                    <input type="hidden" name="cedula" value="{{ usuario.0 }}">
+                    <input type="hidden" name="nombre" value="{{ usuario.1 }}">
+                    <input type="hidden" name="apellido" value="{{ usuario.2 }}">
+                    <input type="hidden" name="telefono" value="{{ usuario.3 }}">
+                    <input type="hidden" name="email" value="{{ usuario.4 }}">
+                    <input type="hidden" name="direccion" value="{{ usuario.5 }}">
+                    <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
+                    <button type="submit" class="btn btn-danger btn-sm">Inhabilitar</button>
+                    </form>
+                  </td>
+              </tr>
+              {% endfor %}
+              
+          </tbody>
+      </table>
 
     <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
     <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
