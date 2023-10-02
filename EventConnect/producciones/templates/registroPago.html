@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventConnect - Registro de pago</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/main.css">
+    <link rel="stylesheet" href="/static/interno.css">
+    <link rel="stylesheet" href="/static/registrar.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Paytone+One&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="{{url_for('usuario')}}">Inicio</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{url_for('boletos')}}">Eventos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="">Mis entradas</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{url_for('actualizarDatos')}}">Mis datos</a>
+              </li>
+              <li class="nav-item ms-auto">
+                <a class="nav-link" href="{{url_for('logout')}}">Salir</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+    <div class="container">
+        <div class="row" style="height: 1px; background-color: #5a7184;">
+        <div class="col-sm">
+            <div class="container" style="width: 500px; margin-bottom: 100px; border-color: #5a7184; border-width: thick;">
+                <div class="screen">
+                    <div class="screen__content">
+                        <h2 style="padding-left: 0%; margin-bottom: 0px;">Formulario de pago</h2>
+                        {% with messages = get_flashed_messages() %}
+                            {%if messages%}
+                        <br/>
+                            {% for message in messages %}
+                        <div class="alert alert-primary alert-dismissible" role="alert">
+                        <strong>{{message}}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                            {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+                        <form class="register" id="formulario" method="post" action="/registropago" enctype="multipart/form-data">
+                            <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
+                            <div class="form">
+                                <p style="margin-bottom: 0%;">Nombre del titular</p>
+                                <input type="text" name="nombre" class="login__input" id="nombre" placeholder="Ej: David Bello." style="margin-bottom: 10%;">
+                                <p style="margin-bottom: 0%;">Cédula del titular</p>
+                                <input type="text" name="cedula" class="login__input" id="cedula" placeholder="Ej: 123456789." style="margin-bottom: 10%;">
+                                <h5 style="margin-bottom: 5%;">Medio de Pago</h5>
+                                <label><input type="checkbox" name="check1" id="check1"> Transferencia</label><br>
+                                <label><input type="checkbox" name="check2" id="check2"> Pago móvil</label>
+                                <p style="margin-bottom: 0%; margin-top: 5%;">Número de referencia</p>
+                                <input type="text" name="nroTrans" class="login__input" id="nroTrans" placeholder="Ej: 12345670983">
+                                <p style="margin-bottom: 0%; margin-top: 5%;">Fecha de transferencia</p>
+                                <input type="date" name="myDate" class="login__input" id="myDate">
+                                <p style="margin-bottom: 0%; margin-top: 5%;" id="cuenta">Número de teléfono</p>
+                                <input type="text" name="telefono" class="login__input" id="telefono" placeholder="Ej: 04145555555">
+                                <p style="margin-bottom: 0%; margin-top: 5%;">Monto transferido</p>
+                                <input type="number" step="0.01" name="monto" class="login__input" id="monto" min="1" placeholder="Ej: 100.00 Bs ">
+                                <h5 style="margin-bottom: 3%; margin-top: 10%;">Imágen adjunta del comprobante</h5>
+                                <input type="file" name="file" class="login__input" id="file" style="width: 410px;" accept="image/png, image/jpeg, image/jpg, image/gif">
+                            
+                                <button type="submit" class="button login__submit" id="loginButton" style="margin-top: 20%; height: 50px; margin-left: 50%;">Realizar pago</button>
+                                <hr>
+                            </div>			
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="container" style="width: 300px; height: 300px; margin-left: 160px; border-color: #5a7184; border-width: thick;">
+                <br>
+                <h3 style="padding-left: 30px;">Datos de transferencia</h3>
+                <br>
+                <p style="padding-left: 30px;">RIF: J-12344321</p>
+                <p style="padding-left: 30px;">Teléfono: 0414-5873-541</p>
+                <p style="padding-left: 30px;">Banco: Banesco</p>
+                <p style="padding-left: 30px;">0134-1234-5678-9123-4567</p>
+            </div>
+        </div>
+        </div>
+    </div>
+    <script src="/static/pago.js"></script>
+    <script>window.onload = function(){
+      var fecha = new Date(); //Fecha actual
+      var mes = fecha.getMonth()+1; //obteniendo mes
+      var dia = fecha.getDate(); //obteniendo dia
+      var ano = fecha.getFullYear(); //obteniendo año
+      if(dia<10)
+        dia='0'+dia; //agrega cero si el menor de 10
+      if(mes<10)
+        mes='0'+mes //agrega cero si el menor de 10
+      document.getElementById('myDate').max=ano+"-"+mes+"-"+dia;
+  }
+  </script>
+</body>
+</html>

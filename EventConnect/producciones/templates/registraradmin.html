@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/main.css">
+    <link rel="stylesheet" href="/static/login.css">
+    <link rel="stylesheet" href="/static/registrar.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
+        crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Paytone+One&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>EventConnect - Registro de administrador</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{url_for('administrativo')}}">Inicio</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('adminPagos')}}">Gestión de pagos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('admineventos')}}">Gestión de eventos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('adminclientes')}}">Lista de Clientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('adminorganizadores')}}">Lista de Organizadores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('adminadmins')}}">Lista de Administradores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('adminreportes')}}">Reportes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('actualizarDatos')}}">Mis datos</a>
+                    </li>
+                    <li class="nav-item ms-auto">
+                        <a class="nav-link" href="{{url_for('logout')}}">Salir</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="screen" style="height: 810px;">
+            <div class="screen__content">
+                <h2>Registro de Administrador</h2>
+                <form class="register" method="POST" action="/registrar" id="formulario">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <div class="form">
+                        <p style="margin-bottom: 0%;">Coloque su nombre</p>
+                        <input type="text" name="nombre" class="login__input" id="nombre" placeholder="Ej: Carlos" style="margin-bottom: 10%;">
+                        <p style="margin-bottom: 0%;">Coloque su apellido</p>
+                        <input type="text" name="apellido" class="login__input" id="apellido" placeholder="Ej: Bastidas" style="margin-bottom: 10%;">
+                        <p style="margin-bottom: 0%;">Indique su cédula</p>
+                        <input type="text" name="cedula" class="login__input" id="cedula" placeholder="Ej: 28019006" style="margin-bottom: 10%;">
+                        <p style="margin-bottom: 0%;">Indique su correo</p>
+                        <input type="email" name="correo" class="login__input" id="correo" placeholder="example@mail.com" style="margin-bottom: 10%;">
+                        <p style="margin-bottom: 0%;">Indique su teléfono</p>
+                        <input type="tel" name="telefono" class="login__input" id="telefono" placeholder="04121234567" style="margin-bottom: 10%;">
+                        <input type="text" name="direccion" class="login__input" id="direccion" placeholder="ej:el paraiso" style="margin-bottom: 10%;">
+                        <p style="margin-bottom: 0%;">Escriba su contraseña</p>
+                        <input type="password" name="password" class="login__input" id="password" placeholder="*******" style="margin-bottom: 10%;">
+                        <button type="submit" class="button login__submit" id="loginButton" style="margin-top: 0%;">Crear cuenta</button>
+                        <hr>
+                    </div>			
+                </form>
+            </div>
+            <div class="screen__background">
+                <span class="screen__background__shape screen__background__shape4"></span>
+                <span class="screen__background__shape screen__background__shape3"></span>		
+                <span class="screen__background__shape screen__background__shape2"></span>
+                <span class="screen__background__shape screen__background__shape1"></span>
+            </div>		
+        </div>
+    </div>
+    <script src="/static/registrar.js"></script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla de administradores</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/main.css">
+    <link rel="stylesheet" href="/static/interno.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Paytone+One&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+   
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{url_for('administrativo')}}">Inicio</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('adminPagos')}}">Gestión de pagos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('admineventos')}}">Gestión de eventos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('adminclientes')}}">Lista de Clientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('adminorganizadores')}}">Lista de Organizadores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('adminadmins')}}">Lista de Administradores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('adminreportes')}}">Reportes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('actualizarDatos')}}">Mis datos</a>
+                    </li>
+                    <li class="nav-item ms-auto">
+                        <a class="nav-link" href="{{url_for('logout')}}">Salir</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>Lista de Administradores</h2>
+        <div class="input-group flex-nowrap">
+          <a href="{{url_for('registrarorganizador')}}" class="btn btn-primary" style="margin-left: 605px;  padding-bottom: 50px; width: 500px; margin-bottom: 40px;">Agregar nuevo</a>
+        </div>
+        <br>
+        <table class="table table-bordered table-striped" id="tabla-test">
+          <thead>
+              <tr>
+                  <th>Cédula</th>
+                  <th>Nombre</th>
+                  <th>Apellido</th>
+                  <th>Teléfono</th>
+                  <th>Email</th>
+                  <th>Dirección</th>
+                  <th>Opción</th>
+              </tr>
+          </thead>
+          <tbody id="myTable">
+              
+              {% for usuario in usuarios %}
+              <tr>
+                  <td>{{ usuario.0 }}</td>
+                  <td>{{ usuario.1 }}</td>
+                  <td>{{ usuario.2 }}</td>
+                  <td>{{ usuario.4 }}</td>
+                  <td>{{ usuario.3 }}</td>
+                  <td>{{ usuario.5 }}</td>
+                  <td>
+                    <form action="{{url_for('tablaAdmin')}}" method="post">
+                    <input type="hidden" name="cedula" value="{{ usuario.0 }}">
+                    <input type="hidden" name="nombre" value="{{ usuario.1 }}">
+                    <input type="hidden" name="apellido" value="{{ usuario.2 }}">
+                    <input type="hidden" name="telefono" value="{{ usuario.4 }}">
+                    <input type="hidden" name="email" value="{{ usuario.3 }}">
+                    <input type="hidden" name="direccion" value="{{ usuario.5 }}">
+                    <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
+                    <button type="submit" class="btn btn-danger btn-sm">Inhabilitar</button>
+                    </form>
+                  </td>
+              </tr>
+              {% endfor %}
+              
+          </tbody>
+      </table>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+    <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-rhJxzI4u0JlDkI5nQPnU+Qh+lk3CvXn6327t1LWzG3wVj0+Uyr1O5P0Jh9jUfI4K" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+
+        $(document).ready(function(){
+            $("#tabla-test").DataTable();
+        });
+        
+
+    </script>
+</body>
+</html>
