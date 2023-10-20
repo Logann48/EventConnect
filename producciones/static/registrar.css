@@ -12,7 +12,14 @@
 .register{
     width: 320px;
 	padding: 30px;
-	padding-top: 56px;
+	padding-top: 55px;
+}
+
+@media only screen and (max-width: 600px) {
+	.register {
+		width: 100%; /* Ajusta el ancho al 100% del ancho de la pantalla */
+		height: auto; /* Ajusta la altura automáticamente */
+	}
 }
 
 .login__input {

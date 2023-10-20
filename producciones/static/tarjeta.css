@@ -67,14 +67,14 @@
   }
 
   .swiper-eventos {
-    width: 500px;
-    height: 400px;
+    width: 300px;
+    height: 200px;
   }
 
   .swiper-eventos img {
     object-fit: cover;
-    width: 500px;
-    height: 400px;
+    width: 300px;
+    height: 200px;
   }
 
   .swiper-eventos .swiper-button-prev, .swiper-eventos .swiper-button-next {
@@ -94,7 +94,7 @@
 
   .swiperPag{
     width: 700px;
-    height: 640px;
+    height: 540px;
   }
 
   .swiperPag .swiper-pagination{
