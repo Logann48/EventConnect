@@ -7,6 +7,8 @@ const expresiones = {
     nroTrans: /^\d{8,11}$/, // 1 a 20 digitos.
     telefono: /^(0412|0424|0414|0416)\d{7}$/, // 11 digitos, empezando con 0412, 0424, 0414 o 0416.
     monto: /^\d+(\.\d{1,2})?$/, // Numeros con hasta dos decimales.
+    transferencia: /^\d{4}$/, // Solo 4 digitos.
+    pagoMovil: /^(0412|0424|0414|0416)\d{7}$/, // Solo 11 digitos
 }
 
 const campos = {
