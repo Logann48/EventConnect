@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/main.css">
+    <link rel="stylesheet" href="/static/login.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
+        crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Paytone+One&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>EventConnect - Iniciar sesión</title>
+</head>
+<body>
+    <div class="container">
+        <div class="screen">
+            <div class="screen__content">
+                <h2 id="titulo">Iniciar sesión</h2>
+                <form class="login" id="formulario" action="/login" method="post">
+                {% with messages = get_flashed_messages() %}
+                    {%if messages%}
+                <br/>
+                    {% for message in messages %}
+                <div class="alert alert-primary alert-dismissible" role="alert">
+                <strong>{{message}}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                    {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                    <div class="login__field">
+                        <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
+                        <i class="gg-user"></i>
+                        <input type="text" id="cedula" name="cedula" class="login__input2" placeholder="Usuario">
+                    </div>
+                    <div class="login__field">
+                        <i class="gg-lock"></i>
+                        <input type="password" id="password" name="password" class="login__input2" placeholder="Contraseña">
+                    </div>
+                    <button class="button login__submit">
+                        <span class="button__text">Entrar</span>
+                        <i class="button__icon fas fa-chevron-right"></i>
+                    </button>
+                    <br>
+                    <p>¿No tienes cuenta? <a href="{{url_for('registrar')}}">Regístrate</a>.</p>
+                    <a class="button login__submit" href="{{url_for('index')}}" type="button" style="width: 100px;">Volver</a> 			
+                </form>
+            </div>
+            <div class="screen__background">
+                <span class="screen__background__shape screen__background__shape4"></span>
+                <span class="screen__background__shape screen__background__shape3"></span>		
+                <span class="screen__background__shape screen__background__shape2"></span>
+                <span class="screen__background__shape screen__background__shape1"></span>
+            </div>		
+        </div>
+    </div>
+    <script src="/static/nuevo_login.js"></script>
+</body>
+</html>
+
+

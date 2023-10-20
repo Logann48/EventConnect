@@ -1,0 +1,44 @@
+
+.entrar{
+    display: flex;
+	align-items: center;
+	justify-content: center;
+    margin-top: 20px;
+    margin-left: 55px;
+}.p{
+    margin-top: 0px;
+}
+
+.register{
+    width: 320px;
+	padding: 30px;
+	padding-top: 55px;
+}
+
+@media only screen and (max-width: 600px) {
+	.register {
+		width: 100%; /* Ajusta el ancho al 100% del ancho de la pantalla */
+		height: auto; /* Ajusta la altura automáticamente */
+	}
+}
+
+.login__input {
+	border: none;
+	border-bottom: 2px solid #D1D1D4;
+	background: none;
+	padding: 5px;
+	font-weight: 700;
+	width: 90%;
+	transition: .2s;
+	box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.2);
+    margin-top: 1px;
+  } 
+  
+.nombre_incorrecto{
+	border-color: red;
+	color: rgb(207, 30, 30);
+}
+.nombre_correcto{
+	border-color: rgb(15, 194, 226);
+	color: rgb(15, 194, 226);
+}
