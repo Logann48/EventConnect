@@ -48,10 +48,10 @@
 </nav>
 
   <div class="container text-center">
-    <div class="row row-cols-2">
+    <div class="row row-cols-2">  
       <div class="col">
         <h3>Reporte de clientes suscritos</h3>
-        <form action="/reporte1">
+        <form action="/reporte1" method="POST">
           <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
           <p>En este reporte se visualiza la cantidad de clientes suscritos en un periodo de tiempo determinado.</p>
           <input type="date" id="start1" class="datel" name="start-date">
@@ -61,7 +61,7 @@
       </div>
       <div class="col">
         <div class="col-md-12">
-          <form action="/reporte2">
+          <form action="/reporte2" method="POST">
           <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
           <h3>Reporte de Organizadores</h3>
           <p>En este reporte se visualiza la lista de orgnizadores registrados que pueden realizar eventos.</p>
@@ -71,22 +71,22 @@
       </div>
       <div class="col">
         <div class="col-md-12">
-          <form action="/reporte3">
+          <form action="/reporte3" method="post">
             <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
             <h3>Reporte de Eventos Agendados</h3>
             <p>En este reporte se visaulizan todos los eventos agendados.</p>
-            <input type="date" id="start3" class="datel" name="start-date">
-            <input type="date" id="end3" class="dater" name="end-date">
+            <input type="date" id="start-date" class="datel" name="start-date">
+            <input type="date" id="end-date" class="dater" name="end-date">
             <button type="submit" class="btn btn-primary">Generar</button>
-        </form>
+          </form>
         </div>
     </div>
       <div class="col">
         <div class="col-md-12">
-          <form action="/reporte4">
+          <form action="/reporte4" method="POST">
             <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
-            <h3>Reporte de Entradas</h3>
-            <p>En este reporte se visualizan las cantidades de entradas vendidas.</p>
+            <h3>Reporte de Entradas Vendidas</h3>
+            <p>En este reporte se visualizan las cantidades de entradas vendidas en cada evento activo.</p>
             <input type="date" id="start4" class="datel" name="start-date">
             <input type="date" id="end4" class="dater" name="end-date">
             <button type="submit" class="btn btn-primary">Generar</button>

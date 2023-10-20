@@ -23,7 +23,7 @@ class ModelUser():
 
         except Exception as ex:
             raise Exception(ex)
-        
+
     @classmethod
     def get_by_cedula(cls, db, id):
         try:
@@ -39,8 +39,6 @@ class ModelUser():
                 return None
         except Exception as ex:
             raise Exception(ex)
-
-
 
     @classmethod   
     def guardarU(self,db,userG,tipo):
@@ -67,7 +65,7 @@ class ModelUser():
                 return None
         except Exception as ex:
             raise Exception(ex)
-        
+
     @classmethod   
     def guardarE(self,db,Nevento,cedula_organizador,Entradas):
         try:
@@ -99,7 +97,7 @@ class ModelUser():
                 return None
         except Exception as ex:
             raise Exception(ex)
-        
+
     @classmethod   
     def guardarI(self,db,files,app,id_evento):
         filenames = []
@@ -194,3 +192,64 @@ class ModelUser():
             print('Error inserting into database: ' + str(e))
             return None
         return pago
+
+    @classmethod
+    def get_report1(self, db):
+        cursor = db.connection.cursor()
+        cursor.execute("""
+            SELECT COUNT(u.cedula) FROM usuario as u
+            JOIN login as l ON u.cedula = l.cedula WHERE l.estado=1 AND tipo=1
+        """)
+        result = cursor.fetchone()[0]
+        cursor.close()
+        return result
+    
+    @classmethod
+    def get_reporte2(self, db):
+        cursor = db.connection.cursor()
+        cursor.execute("""
+            SELECT COUNT(u.cedula) FROM usuario as u JOIN login as l ON u.cedula = l.cedula WHERE l.estado=1 AND l.tipo=2
+        """)
+        result = cursor.fetchone()[0]
+        cursor.close()
+        return result
+    
+    @classmethod
+    def get_reporte3(self, db,start_date,end_date):
+        cursor = db.connection.cursor()
+        try:
+            cursor.execute("""
+                SELECT nombre, cedula, fecha_Evento FROM eventos
+                WHERE estado=1 AND fecha_Evento BETWEEN '{0}' AND '{1}' ORDER BY fecha_Evento ASC
+            """.format(start_date, end_date))
+            result = cursor.fetchall()
+            print(result)
+            if result is None:
+                result = []
+            column_names = ['nombre', 'cedula', 'fecha']
+            cursor.close()
+            return [dict(zip(column_names, row)) for row in result]
+        except Exception as e:
+            print('Error inserting into database: ' + str(e))
+            return []
+
+
+
+    @classmethod
+    def get_report4(self,db):
+        cursor = db.connection.cursor()
+        cursor.execute("""
+            SELECT e.nombre, e.cedula, e.estado, te.tipo, SUM(de.cantidad) as cantidad_vendida
+            FROM detalle_compra as de
+            JOIN compra as c ON de.id_compra = c.id_compra
+            JOIN eventos as e ON c.id_evento = e.id_evento 
+            JOIN entrada_evento as ee ON e.id_Evento=ee.id_Evento AND de.id_tipoentrada = ee.id_TipoEntrada
+            JOIN tipo_entrada as te ON te.id_TipoEntrada=de.id_TipoEntrada 
+            GROUP BY e.nombre, e.cedula, e.estado, te.tipo
+        """)
+        column_names = ['nombre', 'cedula', 'estado', 'tipo', 'cantidad_vendida']
+        result = cursor.fetchall()
+        cursor.close()
+        return [dict(zip(column_names, row)) for row in result]
+    
+
