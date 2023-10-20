@@ -31,6 +31,11 @@ const validarFormulario = (e) => {
 			validarCampo(expresiones.nroTrans, e.target, 'nroTrans');
 		break;
         case "telefono":
+	      if (document.getElementById('check1').checked) {
+                validarCampo(expresiones.transferencia, e.target, 'telefono');
+            } else if (document.getElementById('check2').checked) {
+                validarCampo(expresiones.pagoMovil, e.target, 'telefono');
+            }
 			validarCampo(expresiones.telefono, e.target, 'telefono');
 		break;
         case "monto":
