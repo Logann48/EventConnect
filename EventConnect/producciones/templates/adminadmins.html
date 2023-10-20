@@ -52,8 +52,10 @@
     <div class="container">
         <h2>Lista de Administradores</h2>
         <div class="input-group flex-nowrap">
-          <a href="{{url_for('registrarorganizador')}}" class="btn btn-primary" style="margin-left: 605px;  padding-bottom: 50px; width: 500px; margin-bottom: 40px;">Agregar nuevo</a>
+          <a href="{{url_for('registraradministrador')}}" class="btn btn-primary btn-sm" style="margin-left: 805px; padding: 15px; padding-bottom: 70px; width: 250px;">Agregar nuevo Administrador</a>
         </div>
+        <br>
+        <br>
         <br>
         <table class="table table-bordered table-striped" id="tabla-test">
           <thead>
@@ -74,16 +76,16 @@
                   <td>{{ usuario.0 }}</td>
                   <td>{{ usuario.1 }}</td>
                   <td>{{ usuario.2 }}</td>
-                  <td>{{ usuario.4 }}</td>
                   <td>{{ usuario.3 }}</td>
+                  <td>{{ usuario.4 }}</td>
                   <td>{{ usuario.5 }}</td>
                   <td>
                     <form action="{{url_for('tablaAdmin')}}" method="post">
                     <input type="hidden" name="cedula" value="{{ usuario.0 }}">
                     <input type="hidden" name="nombre" value="{{ usuario.1 }}">
                     <input type="hidden" name="apellido" value="{{ usuario.2 }}">
-                    <input type="hidden" name="telefono" value="{{ usuario.4 }}">
-                    <input type="hidden" name="email" value="{{ usuario.3 }}">
+                    <input type="hidden" name="telefono" value="{{ usuario.3 }}">
+                    <input type="hidden" name="email" value="{{ usuario.4 }}">
                     <input type="hidden" name="direccion" value="{{ usuario.5 }}">
                     <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
                     <button type="submit" class="btn btn-danger btn-sm">Inhabilitar</button>
@@ -111,7 +113,6 @@
         $(document).ready(function(){
             $("#tabla-test").DataTable();
         });
-        
 
     </script>
 </body>

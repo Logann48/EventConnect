@@ -54,9 +54,9 @@
     
     <div>
     {% block body %}
-    <div class="container" style="width: 1600px; height: 750px;">
+    <div class="container" style="width: 1000px; height: 650px;">
       <h1 class="card-price" style="text-align: center; padding-top: 30px; font-size: xx-large;">Eventos disponibles</h1>
-      <div class="swiper swiperPag" style="width: 1200px";>
+      <div class="swiper swiperPag" style="width: 900px;">
         <div class="swiper-wrapper">
             {% for evento in eventos %}
           <div class="swiper-slide"> 
@@ -78,7 +78,7 @@
                   </div>
                 </div>
                 <div class="col-sm">
-                  <div class="card-body" style="width: 500px;">
+                  <div class="card-body" style="width: 300px;">
                     <h3 class="card-title">{{ evento.2 }}</h5>
                     <p class="card-text"><strong>Fecha y hora: </strong>{{ evento.3 }}</p>
                     <p class="card-text"><strong>Descripcion breve del concierto: </strong>{{ evento.4 }}</p>
