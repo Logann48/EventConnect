@@ -50,7 +50,7 @@
     </nav>
 
     <div class="container">
-        <h2>Lista de Administradores</h2>
+        <h2>Lista de administradores</h2>
         <div class="input-group flex-nowrap">
           <a href="{{url_for('registraradministrador')}}" class="btn btn-primary btn-sm" style="margin-left: 805px; padding: 15px; padding-bottom: 70px; width: 250px;">Agregar nuevo Administrador</a>
         </div>
@@ -63,8 +63,8 @@
                   <th>Cédula</th>
                   <th>Nombre</th>
                   <th>Apellido</th>
-                  <th>Teléfono</th>
                   <th>Email</th>
+                  <th>Teléfono</th>
                   <th>Dirección</th>
                   <th>Opción</th>
               </tr>
@@ -87,6 +87,7 @@
                     <input type="hidden" name="telefono" value="{{ usuario.3 }}">
                     <input type="hidden" name="email" value="{{ usuario.4 }}">
                     <input type="hidden" name="direccion" value="{{ usuario.5 }}">
+                    <input type="hidden" name="estado" value="{{ usuario.8 }}">
                     <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
                     <button type="submit" class="btn btn-danger btn-sm">Inhabilitar</button>
                     </form>
@@ -96,6 +97,53 @@
               
           </tbody>
       </table>
+      </div>
+
+      <div class="container">
+        <h2>Administradores inhabilitados</h2>
+        <table class="table table-bordered table-striped" id="tabla-test2">
+          <thead>
+              <tr>
+                  <th>Cédula</th>
+                  <th>Nombre</th>
+                  <th>Apellido</th>
+                  <th>Email</th>
+                  <th>Teléfono</th>
+                  <th>Dirección</th>
+                  <th>Opción</th>
+              </tr>
+          </thead>
+          <tbody id="myTable">
+              
+              {% for inhAdmins in InhAdmin %}
+              <tr>
+                  <td>{{ inhAdmins.0 }}</td>
+                  <td>{{ inhAdmins.1 }}</td>
+                  <td>{{ inhAdmins.2 }}</td>
+                  <td>{{ inhAdmins.3 }}</td>
+                  <td>{{ inhAdmins.4 }}</td>
+                  <td>{{ inhAdmins.5 }}</td>
+                  <td>
+                    <form action="" method="post">
+                    <input type="hidden" name="cedula" value="{{ inhAdmins.0 }}">
+                    <input type="hidden" name="nombre" value="{{ inhAdmins.1 }}">
+                    <input type="hidden" name="apellido" value="{{ inhAdmins.2 }}">
+                    <input type="hidden" name="telefono" value="{{ inhAdmins.3 }}">
+                    <input type="hidden" name="email" value="{{ inhAdmins.4 }}">
+                    <input type="hidden" name="direccion" value="{{ inhAdmins.5 }}">
+                    <input type="hidden" name="estado" value="{{ inhAdmins.8 }}">
+                    <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
+                    <button type="submit" class="btn btn-primary btn-sm">Habilitar</button>
+                    </form>
+                  </td>
+              </tr>
+              {% endfor %}
+              
+          </tbody>
+      </table>
+      </div>
+
+      
 
     <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
     <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -112,6 +160,10 @@
 
         $(document).ready(function(){
             $("#tabla-test").DataTable();
+        });
+
+        $(document).ready(function(){
+            $("#tabla-test2").DataTable();
         });
 
     </script>

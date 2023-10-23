@@ -59,7 +59,6 @@
                     <th>Nombre</th>
                     <th>Fecha y hora</th>
                     <th>Descripción</th>
-                    <th>Estado</th>
                     <th>Opciones</th>
                     <th></th>
                 </tr>
@@ -71,7 +70,6 @@
                     <td>{{ evento.2 }}</td>
                     <td>{{ evento.3 }}</td>
                     <td>{{ evento.4 }}</td>
-                    <td>{{ evento.5 }}</td>
                     <td>
                         <form action="{{url_for('tablaEvento2')}}" method="post">
                             <input type="hidden" name="organizer" value="{{ evento.1 }}">
@@ -90,12 +88,53 @@
         </table>
     </div>
 
+    <div class="container">
+        <h2>Eventos inhabilitados</h2>
+        <table class="table table-bordered table-striped" id="tabla-test2">
+            <thead>
+                <tr>
+                    <th>Organizador</th>
+                    <th>Nombre</th>
+                    <th>Fecha y hora</th>
+                    <th>Descripción</th>
+                    <th>Opciones</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="myTable2">
+                {% for eventoInh in eventosInh %}
+                <tr>
+                    <td>{{ eventoInh.1 }}</td>
+                    <td>{{ eventoInh.2 }}</td>
+                    <td>{{ eventoInh.3 }}</td>
+                    <td>{{ eventoInh.4 }}</td>
+                    <td>
+                        <form action="" method="post">
+                            <input type="hidden" name="organizer" value="{{ eventoInh.1 }}">
+                            <input type="hidden" name="nombre" value="{{ eventoInh.2 }}">
+                            <input type="hidden" name="fecha_hora" value="{{ eventoInh.3 }}">
+                            <input type="hidden" name="descripcion" value="{{ eventoInh.4 }}">
+                            <input type="hidden" name="estado" value="{{ eventoInh.5 }}">
+                            <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
+                            <button type="submit" class="btn btn-primary btn-sm">Habilitar</button>
+                        </form>
+                    </td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
 
   <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
   <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
   <script>
       $(document).ready(function(){
             $("#tabla-test").DataTable();
+          });
+      $(document).ready(function(){
+            $("#tabla-test2").DataTable();
           });
   </script>
 
