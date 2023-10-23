@@ -53,7 +53,7 @@
         <h3>Clientes suscritos</h3>
         <form action="/reporte1" method="POST">
           <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
-          <p>En este reporte se visualiza la cantidad de clientes activos suscritos actualmente al sistema.</p>
+          <p>Este reporte genera un contador de los clientes suscritos actualmente al sistema.</p>
           <button type="submit" class="btn btn-primary" style="width: 300px;">Generar</button>
         </form>
       </div>
@@ -62,14 +62,14 @@
           <form action="/reporte2" method="POST">
           <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
           <h3>Organizadores activos</h3>
-          <p>En este reporte se visualiza la cantidad de organizadores registrados que pueden crear eventos.</p>
+          <p>En este reporte se visualiza la lista de organizadores registrados que pueden realizar eventos.</p>
           <button type="submit" id="org" class="btn btn-primary" style="width: 300px;">Generar</button>
         </form>
         </div>
       </div>
       <div class="col" style="border: 5px solid #5895c7; border-radius: 30px;">
         <div class="col-md-12">
-          <form action="/reporte3" method="POST">
+          <form action="/reporte3" method="post">
             <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
             <h3>Calendario de eventos</h3>
             <p>En este reporte se visualizan todos los eventos agendados en un rango de fechas.</p>

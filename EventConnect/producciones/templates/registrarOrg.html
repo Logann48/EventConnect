@@ -51,47 +51,27 @@
     </nav>
 
     <div class="container">
-        <div class="screen" style="height: 670px; margin-top: 60px; width: 600px;">
+        <div class="screen" style="height: 850px;">
             <div class="screen__content">
-                <h2 style="margin-left: 26%;">¡Regístrate ahora!</h2>
-                <form class="register" method="POST" action="/registrarorganizador" id="formulario" style="width: 600px;">
+                <h2>Registro de organizador</h2>
+                <form class="register" method="POST" action="/registrar" id="formulario">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <div class="form">
-                        {% with messages = get_flashed_messages() %}
-                            {%if messages%}
-                        <br/>
-                            {% for message in messages %}
-                        <div class="alert alert-primary alert-dismissible" role="alert">
-                        <strong>{{message}}</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                            {% endfor %}
-                            {% endif %}
-                        {% endwith %}
-                        <div class="row">
-                            <div class="col-sm">
-                                <p style="margin-bottom: 0%;">Coloque el nombre de su empresa</p>
-                                <input type="text" name="nombre" class="login__input" id="nombre" placeholder="Ej: inversiones ABC" style="margin-bottom: 10%;">
-                                <p style="margin-bottom: 0%;">Nombre del encargado</p>
-                                <input type="text" name="apellido" class="login__input" id="apellido" placeholder="Ej: Carlos Bastidas" style="margin-bottom: 10%;">
-                                <p style="margin-bottom: 0%;">Indique su RIF</p>
-                                <input type="text" name="cedula" class="login__input" id="cedula" placeholder="Ej: 28019006" style="margin-bottom: 10%;">
-                                <p style="margin-bottom: 0%;">Indique su correo</p>
-                                <input type="email" name="correo" class="login__input" id="correo" placeholder="example@mail.com" style="margin-bottom: 10%;">
-                            </div>
-                            <div class="col-sm">
-                                <p style="margin-bottom: 0%;">Indique su teléfono</p>
-                                <input type="tel" name="telefono" class="login__input" id="telefono" placeholder="04121234567" style="margin-bottom: 10%;">
-                                <p style="margin-bottom: 0%;">Indique su dirección</p>
-                                <input type="text" name="direccion" class="login__input" id="direccion" placeholder="ej:el paraiso" style="margin-bottom: 10%;">
-                                <p style="margin-bottom: 0%;">Escriba su contraseña</p>
-                                <input type="password" name="password" class="login__input" id="password" placeholder="*******" style="margin-bottom: 10%;">
-                            </div>
-                        </div>     
-                        <button type="submit" class="button login__submit" id="loginButton" style="position: relative; margin-top: 0%; margin-left: 31%; width: 200px; padding-left: 42px;">Crear cuenta</button>
-                        <br>
-                        <p>¿Ya tienes cuenta? <a href="{{url_for('login')}}" style="color: rgb(47, 78, 255);">Inicia sesión.</a></p>
-                        <a class="button login__submit" href="{{url_for('index')}}" type="button" style="width: 100px;">Volver</a>
+                        <p style="margin-bottom: 0%;">Nombre de la empresa</p>
+                        <input type="text" name="nombre" class="login__input" id="nombre" placeholder="Ej: Eventos C.A." style="margin-bottom: 10%;">
+                        <p style="margin-bottom: 0%;">RIF</p>
+                        <input type="text" name="apellido" class="login__input" id="rif" placeholder="Ej: V123456789" style="margin-bottom: 10%;">
+                        <p style="margin-bottom: 0%;">Dirección</p>
+                        <input type="text" name="cedula" class="login__input" id="direccion" placeholder="Ej: Av 5, entre 6 y 7" style="margin-bottom: 10%;">
+                        <p style="margin-bottom: 0%;">Correo</p>
+                        <input type="email" name="correo" class="login__input" id="correo" placeholder="example@mail.com" style="margin-bottom: 10%;">
+                        <p style="margin-bottom: 0%;">Teléfono</p>
+                        <input type="tel" name="telefono" class="login__input" id="telefono" placeholder="04121234567" style="margin-bottom: 10%;">
+                        <p style="margin-bottom: 0%;">Dirección</p>
+                        <input type="text" name="direccion" class="login__input" id="direccion" placeholder="ej:el paraiso" style="margin-bottom: 10%;">
+                        <p style="margin-bottom: 0%;">Contraseña</p>
+                        <input type="password" name="password" class="login__input" id="password" placeholder="*******" style="margin-bottom: 10%;">
+                        <button type="submit" class="button login__submit" id="loginButton" style="margin-top: 0%; height: 50px;">Crear cuenta de organizador</button>
                         <hr>
                     </div>			
                 </form>

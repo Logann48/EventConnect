@@ -8,7 +8,7 @@ const expresiones = {
     telefono: /^(0412|0424|0414|0416)\d{7}$/, // 11 digitos, empezando con 0412, 0424, 0414 o 0416.
     monto: /^\d+(\.\d{1,2})?$/, // Numeros con hasta dos decimales.
     transferencia: /^\d{4}$/, // Solo 4 digitos.
-    pagoMovil: /^(0412|0424|0414|0416)\d{7}$/, // Solo 11 digitos.
+    pagoMovil: /^(0412|0424|0414|0416)\d{7}$/, // Solo 11 digitos
 }
 
 const campos = {
@@ -31,11 +31,12 @@ const validarFormulario = (e) => {
 			validarCampo(expresiones.nroTrans, e.target, 'nroTrans');
 		break;
         case "telefono":
-            if (document.getElementById('check1').checked) {
+	      if (document.getElementById('check1').checked) {
                 validarCampo(expresiones.transferencia, e.target, 'telefono');
             } else if (document.getElementById('check2').checked) {
                 validarCampo(expresiones.pagoMovil, e.target, 'telefono');
             }
+			validarCampo(expresiones.telefono, e.target, 'telefono');
 		break;
         case "monto":
 			validarCampo(expresiones.monto, e.target, 'monto');
@@ -80,17 +81,20 @@ formulario.addEventListener('submit', (e) => {
 document.getElementById('check1').addEventListener('change', function() {
     if(this.checked) {
         document.getElementById('telefono').placeholder = "1234";
+        document.getElementById('cuenta').innerText = "últimos 7 digitos de la cuenta";
         document.getElementById('check2').checked = false;
     } else {
-        // reset the placeholder when checkbox is unchecked
+        // reset the placeholder and text when checkbox is unchecked
         document.getElementById('telefono').placeholder = "Ej: 04145555555";
+        document.getElementById('cuenta').innerText = "Número de teléfono";
     }
 });
 
 document.getElementById('check2').addEventListener('change', function() {
     if(this.checked) {
         document.getElementById('check1').checked = false;
-        // reset the placeholder when checkbox is checked
+        // reset the placeholder and text when checkbox is checked
         document.getElementById('telefono').placeholder = "Ej: 04145555555";
+        document.getElementById('cuenta').innerText = "Número de teléfono";
     }
 });

@@ -296,7 +296,9 @@ def registroevento():
             return render_template('registroEvento.html')
     else:
         return redirect(url_for('login'))
+    
 
+###########################################################################################################
 
 @app.route('/principal')
 @login_required
@@ -360,7 +362,7 @@ def actualDatos():
             
             cur = db.connection.cursor()
             
-            update_query = """UPDATE usuario SET correo = %s, telefono = %s, direccion = %sWHERE cedula = %s"""
+            update_query = """UPDATE usuario SET correo = %s, telefono = %s, direccion = %s WHERE cedula = %s"""
             cur.execute(update_query, (correo, telefono, direccion, cedula))
             db.connection.commit()
 
@@ -408,19 +410,22 @@ def tablaPago1():
 @app.route('/gestionevento')
 @login_required
 def gestionevento():
-    if 'user_type' in session and session['user_type'] == 2:
+    if 'user_type' in session and session['user_type'] == 2 or 3:
         cur = db.connection.cursor()
+        cur2 = db.connection.cursor()
         cur.execute('SELECT * FROM eventos WHERE estado = 1')
+        cur2.execute('SELECT * FROM eventos WHERE estado = 0')
         dataEvent = cur.fetchall()
+        dataInh = cur2.fetchall()
         db.connection.commit()
-        return render_template('gestionevento.html', eventos=dataEvent)
+        return render_template('gestionevento.html', eventos=dataEvent, eventosInh=dataInh)
     else:
         return redirect(url_for('login'))
 
 @app.route('/gestionevento', methods=['GET','POST'])
 @login_required
 def tablaEvento1():
-    if 'user_type' in session and session['user_type'] == 2:
+    if 'user_type' in session and session['user_type'] == 2 or 3:
         if request.method == "POST":
             nombre = request.form['nombre']
             fecha_hora = request.form['fecha_hora']
@@ -428,8 +433,55 @@ def tablaEvento1():
             estado = request.form['estado']
 
             cur = db.connection.cursor()
-            cur.execute("UPDATE eventos SET estado = 0 WHERE nombre = %s AND fecha = %s AND descripcion = %s AND estado = %s",
-            (nombre, fecha_hora, descripcion, estado))
+            
+            if estado == '1':
+                cur.execute("UPDATE eventos SET estado = 0 WHERE nombre = %s AND fecha = %s AND descripcion = %s AND estado = %s",
+                (nombre, fecha_hora, descripcion, estado))
+            elif estado == '0':
+                cur.execute("UPDATE eventos SET estado = 1 WHERE nombre = %s AND fecha = %s AND descripcion = %s AND estado = %s",
+                (nombre, fecha_hora, descripcion, estado))        
+            
+            db.connection.commit()
+
+        return render_template('InhaEvExito.html')
+    else:
+        return redirect(url_for('login'))
+    
+@app.route('/actualizarEvento', methods=['GET','POST'])
+@login_required
+def actualizarEvento():
+    if 'user_type' in session and session['user_type'] == 2 or 3:
+        if request.method == "POST":
+            nombre = request.form['nombre']
+            fecha_hora = request.form['fecha_hora']
+            descripcion = request.form['descripcion']
+            idEvento = request.form['id']
+
+            cur = db.connection.cursor()
+
+            cur.execute('SELECT nombre, fecha, descripcion FROM eventos WHERE id_Evento = %s', (idEvento,))
+            dataEventOne = cur.fetchone()
+           
+            db.connection.commit()
+
+        return render_template('actualizarEvento.html', datosEvento = dataEventOne)
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/gestionevento', methods=['GET','POST'])
+@login_required
+def modificarEvento():
+    if 'user_type' in session and session['user_type'] == 2 or 3:
+        if request.method == "POST":
+            nombre = request.form['nombre']
+            fecha_hora = request.form['fecha']
+            descripcion = request.form['descripcion']
+            idEvento = request.form['id']
+
+            cur = db.connection.cursor()
+            
+            update_query = """UPDATE evento SET nombre = %s, fecha = %s, descripcion = %s WHERE id_Evento = %s"""
+            cur.execute(update_query, (nombre, fecha_hora, descripcion, idEvento))
             db.connection.commit()
 
         return render_template('InhaEvExito.html')
@@ -453,10 +505,13 @@ def administrativo():
 def admineventos():
     if 'user_type' in session and session['user_type'] == 3:
         cur = db.connection.cursor()
+        cur2 = db.connection.cursor()
         cur.execute('SELECT * FROM eventos WHERE estado = 1')
+        cur2.execute('SELECT * FROM eventos WHERE estado = 0')
         dataEvent = cur.fetchall()
+        dataInh = cur2.fetchall()
         db.connection.commit()
-        return render_template('admineventos.html', eventos=dataEvent)
+        return render_template('admineventos.html', eventos=dataEvent, eventosInh = dataInh)
     else:
         return redirect(url_for('login'))
 
@@ -471,14 +526,20 @@ def tablaEvento2():
             estado = request.form['estado']
 
             cur = db.connection.cursor()
-            cur.execute("UPDATE eventos SET estado = 0 WHERE nombre = %s AND fecha = %s AND descripcion = %s AND estado = %s",
-            (nombre, fecha_hora, descripcion, estado))
+            
+            if estado == '1':
+                cur.execute("UPDATE eventos SET estado = 0 WHERE nombre = %s AND fecha = %s AND descripcion = %s AND estado = %s",
+                (nombre, fecha_hora, descripcion, estado))
+            elif estado == '0':
+                cur.execute("UPDATE eventos SET estado = 1 WHERE nombre = %s AND fecha = %s AND descripcion = %s AND estado = %s",
+                (nombre, fecha_hora, descripcion, estado))        
+            
             db.connection.commit()
 
         return render_template('InhaEvAdminExito.html')
     else:
         return redirect(url_for('login'))
-
+        
 ############################################################################
 
 @app.route('/adminorganizadores')
@@ -486,9 +547,12 @@ def tablaEvento2():
 def adminorganizadores():
     if 'user_type' in session and session['user_type'] == 3:
         cur = db.connection.cursor()
+        cur2 = db.connection.cursor()
         cur.execute('SELECT * FROM usuario INNER JOIN login ON usuario.cedula = login.cedula WHERE login.tipo = "2" AND login.estado = 1')
+        cur2.execute('SELECT * FROM usuario INNER JOIN login ON usuario.cedula = login.cedula WHERE login.tipo = "2" AND login.estado = 0')
         dataUsers = cur.fetchall()
-        return render_template('adminorganizadores.html', usuarios = dataUsers)
+        inhOrg = cur2.fetchall()
+        return render_template('adminorganizadores.html', usuarios = dataUsers, inhOrg = inhOrg)
     else:
         return redirect(url_for('login'))
 
@@ -498,10 +562,17 @@ def tablaOrg():
     if 'user_type' in session and session['user_type'] == 3:
         if request.method == "POST":
             cedula = request.form['cedula']
+            estado = request.form['estado']
 
             cur = db.connection.cursor()
-            cur.execute("UPDATE login SET estado = 0 WHERE cedula = %s",
-            (cedula,))
+            
+            if estado == '1':
+                cur.execute("UPDATE login SET estado = 0 WHERE cedula = %s AND estado = %s",
+                (cedula, estado,))
+            elif estado == '0':
+                cur.execute("UPDATE login SET estado = 1 WHERE cedula = %s AND estado = %s",
+                (cedula, estado,))
+            
             db.connection.commit()
 
         return render_template('InhaOrgExito.html')
@@ -515,12 +586,39 @@ def tablaOrg():
 def adminclientes():
     if 'user_type' in session and session['user_type'] == 3:
         cur = db.connection.cursor()
-        cur.execute('SELECT * FROM usuario INNER JOIN login ON usuario.cedula = login.cedula WHERE login.tipo = "1"')
+        cur2 = db.connection.cursor()
+        cur.execute('SELECT * FROM usuario INNER JOIN login ON usuario.cedula = login.cedula WHERE login.tipo = "1" AND login.estado = "1"')
+        cur2.execute('SELECT * FROM usuario INNER JOIN login ON usuario.cedula = login.cedula WHERE login.tipo = "1" AND login.estado = "0"')
         dataUsers = cur.fetchall()
+        InhUsers = cur2.fetchall()
         db.connection.commit()
-        return render_template('adminclientes.html', usuarios = dataUsers)
+        return render_template('adminclientes.html', usuarios = dataUsers, inhusuarios = InhUsers)
     else:
         return redirect(url_for('login'))
+
+@app.route('/adminclientes', methods=['GET','POST'])
+@login_required
+def tablaClientes1():
+    if 'user_type' in session and session['user_type'] == 3:
+        if request.method == "POST":
+            cedula = request.form['cedula']
+            estado = request.form['estado']
+
+            cur = db.connection.cursor()
+            
+            if estado == '1':
+                cur.execute("UPDATE login SET estado = 0 WHERE cedula = %s AND estado = %s",
+                (cedula, estado))
+            elif estado == '0':
+                cur.execute("UPDATE login SET estado = 1 WHERE cedula = %s AND estado = %s",
+                (cedula, estado))
+            
+            db.connection.commit()
+
+        return render_template('InhaUserAdminExito.html')
+    else:
+        return redirect(url_for('login'))
+
 
 #################################################################################################
 @app.route('/adminadmins')
@@ -528,10 +626,13 @@ def adminclientes():
 def adminadmins():
     if 'user_type' in session and session['user_type'] == 3:
         cur = db.connection.cursor()
+        cur2 = db.connection.cursor()
         cur.execute('SELECT * FROM usuario INNER JOIN login ON usuario.cedula = login.cedula WHERE login.tipo = "3" AND login.estado = "1"')
+        cur2.execute('SELECT * FROM usuario INNER JOIN login ON usuario.cedula = login.cedula WHERE login.tipo = "3" AND login.estado = "0"')
         dataUsers = cur.fetchall()
+        InhAdmin = cur2.fetchall()
         db.connection.commit()
-        return render_template('adminadmins.html', usuarios = dataUsers)
+        return render_template('adminadmins.html', usuarios = dataUsers, InhAdmin = InhAdmin)
     else:
         return redirect(url_for('login'))
     
@@ -541,10 +642,17 @@ def tablaAdmin():
     if 'user_type' in session and session['user_type'] == 3:
         if request.method == "POST":
             cedula = request.form['cedula']
+            estado = request.form['estado']
 
             cur = db.connection.cursor()
-            cur.execute("UPDATE login SET estado = 0 WHERE cedula = %s",
-            (cedula,))
+            
+            if estado == '1':
+                cur.execute("UPDATE login SET estado = 0 WHERE cedula = %s AND estado = %s",
+                (cedula, estado,))
+            elif estado == '0':
+                cur.execute("UPDATE login SET estado = 1 WHERE cedula = %s AND estado = %s",
+                (cedula, estado,))
+            
             db.connection.commit()
 
         return render_template('InhaAdminExito.html')
@@ -662,11 +770,10 @@ def reporte3():
     if 'user_type' in session and session['user_type'] == 3:
         inicio=request.form['start-date']
         fin=request.form['end-date']
-        if inicio!="" or fin!="":
-            print("este")
-            Num_Rep=4
-            data = ModelUser.get_reporte3(db, inicio, fin,Num_Rep)
-            if data:
+        if inicio!="" and fin!="":
+            if inicio!="":
+                Num_Rep=5
+                data = ModelUser.get_reporte3(db, inicio, fin,Num_Rep)
                 print(data)
                 width, height = letter
                 line_height = 11
@@ -685,7 +792,7 @@ def reporte3():
                         start_height = height - 10*line_height
                 total_pages = c.getPageNumber()
                 # Second pass to draw the content and include the total page count
-                c = canvas.Canvas(f"reporte_eventos_activos_{inicio}_al_{fin}.pdf", pagesize=letter)
+                c = canvas.Canvas(f"reporte_eventos_activos_{inicio}al{fin}.pdf", pagesize=letter)
                 c.setFont('Times-Bold', 12)
                 c.drawCentredString(width / 2, height - 8* line_height, f"Reporte de Eventos Activos en el lapso entre {inicio} y {fin}")
                 c.setFont('Times-Roman', 12)
@@ -707,12 +814,11 @@ def reporte3():
                 c.showPage()
                 c.save()
                 try:
-                    print("hasta aqui")
-                    return send_file(f"reporte_eventos_activos_{inicio}_al_{fin}.pdf", as_attachment=True)
+                    return send_file(f"reporte_eventos_activos_{inicio}al{fin}.pdf", as_attachment=True)
                 except Exception as e:
                     return print(str(e))
         else:
-            Num_Rep=3
+            Num_Rep=4
             data = ModelUser.get_reporte3(db, inicio, fin,Num_Rep)
             if data:
                 print("o este")
@@ -733,9 +839,9 @@ def reporte3():
                         start_height = height - 10*line_height
                 total_pages = c.getPageNumber()
                 # Second pass to draw the content and include the total page count
-                c = canvas.Canvas("reporte_venta_entradas_por_evento.pdf", pagesize=letter)
+                c = canvas.Canvas("reporte_eventos_activos.pdf", pagesize=letter)
                 c.setFont('Times-Bold', 12)
-                c.drawCentredString(width / 2, height - 8* line_height, "Reporte de Venta de Entradas por Evento")
+                c.drawCentredString(width / 2, height - 8* line_height, "Reporte de Eventos Activos")
                 c.setFont('Times-Roman', 12)
                 c.drawString(width - 150, height - 2.5 * line_height, datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
                 c.drawString(width - 150, height - 5.5 * line_height, f"Administrador: {current_user.cedula}")
@@ -789,7 +895,7 @@ def reporte4():
                         start_height = height - 10*line_height
                 total_pages = c.getPageNumber()
                 # Second pass to draw the content and include the total page count
-                c = canvas.Canvas(f"reporte_venta_entradas_por_evento_activo_{inicio}_al_{fin}.pdf", pagesize=letter)
+                c = canvas.Canvas(f"reporte_venta_entradas_por_evento_activo_{inicio}al{fin}.pdf", pagesize=letter)
                 c.setFont('Times-Bold', 12)
                 c.drawCentredString(width / 2, height - 8* line_height, f"Reporte de Entradas Vendidas en el lapso {inicio} al {fin} por Evento activo")
                 c.setFont('Times-Roman', 12)
@@ -813,7 +919,7 @@ def reporte4():
                 c.showPage()
                 c.save()
                 try:
-                    return send_file(f"reporte_venta_entradas_por_evento_activo_{inicio}_al_{fin}.pdf", as_attachment=True)
+                    return send_file(f"reporte_venta_entradas_por_evento_activo_{inicio}al{fin}.pdf", as_attachment=True)
                 except Exception as e:
                     return str(e)
         else:
@@ -873,8 +979,8 @@ def reporte4():
 @login_required
 def reporte5():
     if 'user_type' in session and session['user_type'] == 3:
-        inicio=request.form['start-date1']
-        fin=request.form['end-date1']
+        inicio=request.form['start-date']
+        fin=request.form['end-date']
         Num_Rep=6
         data = ModelUser.get_reporte3(db, inicio, fin,Num_Rep)
         if data:
@@ -894,7 +1000,7 @@ def reporte5():
                     start_height = height - 10*line_height
             total_pages = c.getPageNumber()
             # Second pass to draw the content and include the total page count
-            c = canvas.Canvas(f"reporte_Pagos_confirmados_del_{inicio}_al_{fin}.pdf", pagesize=letter)
+            c = canvas.Canvas(f"reporte_Pagos_confirmados_del_{inicio}al{fin}.pdf", pagesize=letter)
             c.setFont('Times-Bold', 12)
             c.drawCentredString(width / 2, height - 8* line_height, f"Reporte de Pagos Confirmados en el periodo del {inicio} al {fin}")
             c.setFont('Times-Roman', 12)
@@ -919,7 +1025,7 @@ def reporte5():
             c.showPage()
             c.save()
             try:
-                return send_file(f"reporte_Pagos_confirmados_del_{inicio}_al_{fin}.pdf", as_attachment=True)
+                return send_file(f"reporte_Pagos_confirmados_del_{inicio}al{fin}.pdf", as_attachment=True)
             except Exception as e:
                 return print(str(e))
         else:
@@ -952,7 +1058,7 @@ def reporte6():
                     start_height = height - 10*line_height
             total_pages = c.getPageNumber()
             # Second pass to draw the content and include the total page count
-            c = canvas.Canvas(f"reporte_Pagos_Pendientes_por_Confirmar_del_{inicio}_al_{fin}.pdf", pagesize=letter)
+            c = canvas.Canvas(f"reporte_Pagos_Pendientes_por_Confirmar_del_{inicio}al{fin}.pdf", pagesize=letter)
             c.setFont('Times-Bold', 12)
             c.drawCentredString(width / 2, height - 8* line_height, f"Reporte de Pagos Pendientes por Confirmar en el periodo del {inicio} al {fin}")
             c.setFont('Times-Roman', 12)
@@ -977,7 +1083,7 @@ def reporte6():
             c.showPage()
             c.save()
             try:
-                return send_file(f"reporte_Pagos_Pendientes_por_Confirmar_del_{inicio}_al_{fin}.pdf", as_attachment=True)
+                return send_file(f"reporte_Pagos_Pendientes_por_Confirmar_del_{inicio}al{fin}.pdf", as_attachment=True)
             except Exception as e:
                 return print(str(e))
         else:
@@ -987,6 +1093,8 @@ def reporte6():
         return redirect(url_for('login'))
 
 ################################## REPORTES ########################################
+
+
 @app.route('/registro_exitoso')
 def registroexitoso():
     return render_template('exito.html')
@@ -1003,3 +1111,4 @@ if __name__ == '__main__':
     app.register_error_handler(401,status_401)
     app.register_error_handler(404,status_404)
     app.run(debug=True)
+

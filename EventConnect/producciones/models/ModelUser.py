@@ -222,14 +222,14 @@ class ModelUser():
             if Num_Rep == 4:
                 cursor.execute("""
                     SELECT nombre, cedula, fecha FROM eventos
-                    WHERE estado=1 AND fecha BETWEEN '{0}' AND '{1}' ORDER BY fecha ASC
+                    WHERE estado=1 ORDER BY fecha ASC
                 """.format(start_date, end_date))
                 column_names = ['nombre', 'cedula', 'fecha']
 
             elif Num_Rep == 5:
                 cursor.execute("""
-                    SELECT nombre, cedula, fecha_Evento FROM eventos
-                    WHERE estado=1 AND fecha_Evento BETWEEN '{0}' AND '{1}' ORDER BY fecha_Evento ASC
+                    SELECT nombre, cedula, fecha FROM eventos
+                    WHERE estado=1 AND fecha BETWEEN '{0}' AND '{1}' ORDER BY fecha ASC
                 """.format(start_date, end_date))
                 column_names = ['nombre', 'cedula', 'fecha']
 
@@ -290,3 +290,5 @@ class ModelUser():
     
 
 ###########################REPORTES############################
+    
+
