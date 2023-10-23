@@ -49,12 +49,12 @@ const validarFormulario = (e) => {
 
 const validarCampo = (expresion, input, campo) => {
 	if(expresion.test(input.value)){
-		document.getElementById(`${campo}`).classList.remove('nombre_incorrecto');
 		document.getElementById(`${campo}`).classList.add('nombre_correcto');
+		document.getElementById(`${campo}`).classList.remove('nombre_incorrecto');
 		campos[campo] = true;
 	} else {
-		document.getElementById(`${campo}`).classList.add('nombre_incorrecto');
 		document.getElementById(`${campo}`).classList.remove('nombre_correcto');
+		document.getElementById(`${campo}`).classList.add('nombre_incorrecto');
 		campos[campo] = false;
 	}
 }
@@ -65,19 +65,28 @@ inputs.forEach((input) => {
 });
 
 formulario.addEventListener('submit', (e) => {
-	if(!(campos.nombre && campos.apellido && campos.cedula && campos.correo && campos.telefono && campos.direccion && campos.password)){
+	if(!(campos.nombre && campos.cedula && campos.correo && campos.telefono && campos.direccion && campos.password)){
 		e.preventDefault();
+		const obj = {
+			nombre: campos.nombre,
+			apellido: campos.apellido,
+			cedula: campos.cedula,
+			correo: campos.correo,
+			telefono: campos.telefono,
+			direccion: campos.direccion,
+			password: campos.password
+		}
+
+		console.log(obj);
 		document.getElementById('formulario__mensaje').classList.add('formulario__mensaje-activo');
+		document.getElementById('formulario__mensaje').innerText = 'Please fill all fields correctly';
 	}
 	else{
-		document.getElementById('formulario__mensaje-exito').classList.add('formulario__mensaje-exito-activo');
-		setTimeout(() => {
-			document.getElementById('formulario__mensaje-exito').classList.remove('formulario__mensaje-exito-activo');
-		}, 5000);
-
+		document.getElementById('formulario__mensaje').classList.remove('formulario__mensaje-activo');
 		document.querySelectorAll('.nombre_correcto').forEach((icono) => {
 			icono.classList.remove('nombre_correcto');
 		});
 	}
 });
+
 

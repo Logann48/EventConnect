@@ -193,6 +193,7 @@ class ModelUser():
             return None
         return pago
 
+###########################REPORTES############################
     @classmethod
     def get_report1(self, db):
         cursor = db.connection.cursor()
@@ -215,41 +216,77 @@ class ModelUser():
         return result
     
     @classmethod
-    def get_reporte3(self, db,start_date,end_date):
+    def get_reporte3(self, db,start_date,end_date,Num_Rep):
         cursor = db.connection.cursor()
         try:
-            cursor.execute("""
-                SELECT nombre, cedula, fecha_Evento FROM eventos
-                WHERE estado=1 AND fecha_Evento BETWEEN '{0}' AND '{1}' ORDER BY fecha_Evento ASC
-            """.format(start_date, end_date))
+            if Num_Rep == 4:
+                cursor.execute("""
+                    SELECT nombre, cedula, fecha FROM eventos
+                    WHERE estado=1 AND fecha BETWEEN '{0}' AND '{1}' ORDER BY fecha ASC
+                """.format(start_date, end_date))
+                column_names = ['nombre', 'cedula', 'fecha']
+
+            elif Num_Rep == 5:
+                cursor.execute("""
+                    SELECT nombre, cedula, fecha_Evento FROM eventos
+                    WHERE estado=1 AND fecha_Evento BETWEEN '{0}' AND '{1}' ORDER BY fecha_Evento ASC
+                """.format(start_date, end_date))
+                column_names = ['nombre', 'cedula', 'fecha']
+
+            elif Num_Rep == 6:
+                cursor.execute("""
+                    SELECT id_DetallePago , cedula, fecha_Compra, Referencia_Pago, monto FROM detalle_pago
+                    WHERE estado=1 AND fecha_Compra BETWEEN '{0}' AND '{1}' ORDER BY fecha_Compra ASC
+                """.format(start_date, end_date))
+                column_names = ['ID', 'cedula', 'fecha', 'referencia', 'monto']
+                
+            elif Num_Rep == 7:
+                cursor.execute("""
+                    SELECT id_DetallePago , cedula, fecha_Compra, Referencia_Pago, monto FROM detalle_pago
+                    WHERE estado=0 AND fecha_Compra BETWEEN '{0}' AND '{1}' ORDER BY fecha_Compra ASC
+                """.format(start_date, end_date))
+                column_names = ['ID', 'cedula', 'fecha', 'referencia', 'monto']
+
             result = cursor.fetchall()
-            print(result)
             if result is None:
                 result = []
-            column_names = ['nombre', 'cedula', 'fecha']
             cursor.close()
             return [dict(zip(column_names, row)) for row in result]
         except Exception as e:
             print('Error inserting into database: ' + str(e))
             return []
 
-
-
     @classmethod
-    def get_report4(self,db):
+    def get_report4(self,db,start_date,end_date,Num_Rep):
         cursor = db.connection.cursor()
-        cursor.execute("""
-            SELECT e.nombre, e.cedula, e.estado, te.tipo, SUM(de.cantidad) as cantidad_vendida
-            FROM detalle_compra as de
-            JOIN compra as c ON de.id_compra = c.id_compra
-            JOIN eventos as e ON c.id_evento = e.id_evento 
-            JOIN entrada_evento as ee ON e.id_Evento=ee.id_Evento AND de.id_tipoentrada = ee.id_TipoEntrada
-            JOIN tipo_entrada as te ON te.id_TipoEntrada=de.id_TipoEntrada 
-            GROUP BY e.nombre, e.cedula, e.estado, te.tipo
-        """)
+        if Num_Rep == 1:
+            cursor.execute("""
+                    SELECT e.nombre, e.cedula, e.estado, te.tipo, SUM(de.cantidad) as cantidad_vendida
+                    FROM detalle_compra as de
+                    JOIN compra as c ON de.id_compra = c.id_compra
+                    JOIN eventos as e ON c.id_evento = e.id_evento 
+                    JOIN detalle_pago as p ON p.id_DetallePago  = c.id_DetallePago 
+                    JOIN entrada_evento as ee ON e.id_Evento=ee.id_Evento AND de.id_tipoentrada = ee.id_TipoEntrada
+                    JOIN tipo_entrada as te ON te.id_TipoEntrada=de.id_TipoEntrada
+                    WHERE fecha_Compra BETWEEN '{0}' AND '{1}' 
+                    GROUP BY e.nombre, e.cedula, e.estado, te.tipo
+                """.format(start_date, end_date))
+            column_names = ['nombre', 'cedula', 'estado', 'tipo', 'cantidad_vendida']
+
+        elif Num_Rep ==2:
+            cursor.execute("""
+                SELECT e.nombre, e.cedula, e.estado, te.tipo, SUM(de.cantidad) as cantidad_vendida
+                FROM detalle_compra as de
+                JOIN compra as c ON de.id_compra = c.id_compra
+                JOIN eventos as e ON c.id_evento = e.id_evento 
+                JOIN entrada_evento as ee ON e.id_Evento=ee.id_Evento AND de.id_tipoentrada = ee.id_TipoEntrada
+                JOIN tipo_entrada as te ON te.id_TipoEntrada=de.id_TipoEntrada 
+                GROUP BY e.nombre, e.cedula, e.estado, te.tipo
+            """)
         column_names = ['nombre', 'cedula', 'estado', 'tipo', 'cantidad_vendida']
         result = cursor.fetchall()
         cursor.close()
         return [dict(zip(column_names, row)) for row in result]
     
 
+###########################REPORTES############################

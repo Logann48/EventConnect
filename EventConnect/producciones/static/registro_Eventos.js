@@ -79,22 +79,4 @@ inputs.forEach((input) => {
 	input.addEventListener('blur', validarFormulario);
 });
 
-formulario.addEventListener('submit', (e) => {
-
-	let allValid = Object.values(campos).every((campo) => campo === true);
-	for (let i = 1; i <= 4; i++) {
-		allValid = allValid && document.getElementById(`tipo${i}`).classList.contains('nombre_correcto');
-		allValid = allValid && document.getElementById(`precio${i}`).classList.contains('nombre_correcto');
-		allValid = allValid && document.getElementById(`tipo${i}`).value !== '';
-		allValid = allValid && document.getElementById(`precio${i}`).value !== '';
-	}
-	if (!allValid) {
-		e.preventDefault();
-		alert('Por favor, corrija los campos marcados en rojo antes de enviar el formulario.');
-	} else {
-		document.querySelectorAll('.nombre_correcto').forEach((icono) => {
-			icono.classList.remove('nombre_correcto');
-		});
-	}
-});
 

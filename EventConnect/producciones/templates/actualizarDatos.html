@@ -13,7 +13,7 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-          <a class="navbar-brand" href="{{url_for('usuario')}}">Inicio</a>
+          <a class="navbar-brand" href="{{url_for('principal')}}">Inicio</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -25,10 +25,10 @@
             </ul>
           </div>
         </div>
-    </nav>
+      </nav>
 
     <div class="container">
-        <div class="screen" style="height: 780px; margin-top: 1px;">
+        <div class="screen" style="height: 910px; margin-top: 70px;">
             <div class="screen__content">
                 <h2>Actualice sus datos</h2>
                 <form class="register" method="POST" action="{{url_for('actualDatos')}}" id="formulario">

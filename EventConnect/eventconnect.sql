@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-09-2023 a las 03:42:20
+-- Tiempo de generación: 23-10-2023 a las 18:41:20
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `eventconnect`
 --
+CREATE DATABASE IF NOT EXISTS `eventconnect` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `eventconnect`;
 
 -- --------------------------------------------------------
 
@@ -104,12 +106,12 @@ CREATE TABLE `detalle_pago` (
 --
 
 INSERT INTO `detalle_pago` (`id_DetallePago`, `cedula`, `fecha_Compra`, `Nombre_Apellido`, `cedula_Pagador`, `Metodo_Pago`, `fecha_Pago`, `Referencia_Pago`, `telefono_Cuenta`, `monto`, `id_Capture`, `estado`) VALUES
-(1, 28019006, '2023-09-22 17:42:32', 'carlos', 28019006, 'Pago Movil', '2023-09-20', 132312, 3216, 200, 'caps/Acer_Wallpaper_03_3840x2400.jpg', 0),
+(1, 28019006, '2023-09-22 17:42:32', 'carlos', 28019006, 'Pago Movil', '2023-09-20', 132312, 3216, 200, 'caps/Acer_Wallpaper_03_3840x2400.jpg', 1),
 (2, 28019006, '2023-09-22 18:38:30', 'ramon', 0, 'Pago Movil', '2023-09-20', 2147483647, 3674, 700, 'caps/Acer_Wallpaper_03_3840x2400.jpg', 1),
 (3, 28019006, '2023-09-22 18:39:36', 'nahomy', 15884430, 'Transferencia', '2023-09-20', 2147483647, 54665465, 350, 'caps/Acer_Wallpaper_01_3840x2400.jpg', 0),
 (28, 28019006, '2023-09-22 22:39:14', 'calo', 5248071, 'Transferencia', '2023-09-27', 132131231, 2147483647, 350, 'caps/Acer_Wallpaper_01_3840x2400.jpg', 1),
 (29, 28019006, '2023-09-23 14:10:12', 'joan', 897987967, 'Pago Movil', '2023-09-22', 2147483647, 9876543, 251, 'caps/Acer_Wallpaper_05_3840x2400.jpg', 0),
-(30, 28019006, '2023-09-23 14:19:22', 'cratos', 2147483647, 'Pago Movil', '2023-11-06', 2147483647, 2147483647, 109, 'caps/Acer_Wallpaper_02_3840x2400.jpg', 0),
+(30, 28019006, '2023-09-23 14:19:22', 'cratos', 2147483647, 'Pago Movil', '2023-11-06', 2147483647, 2147483647, 109, 'caps/Acer_Wallpaper_02_3840x2400.jpg', 1),
 (31, 8064454, '2023-09-24 11:53:04', 'Deivi', 8064454, 'Transferencia', '2023-09-13', 2147483647, 2147483647, 5000, 'caps/l7rtafPl_400x400.jpg', 0),
 (32, 8064454, '2023-09-24 11:59:35', 'Deivi', 28406734, 'Transferencia', '2023-09-05', 2147483647, 2147483647, 401, 'caps/l7rtafPl_400x400.jpg', 0),
 (33, 28444555, '2023-09-26 21:41:12', 'Deivi', 28406734, 'Transferencia', '2023-09-21', 2147483647, 2147483647, 402, 'caps/token_3_5.png', 0);
@@ -157,11 +159,11 @@ CREATE TABLE `eventos` (
 
 INSERT INTO `eventos` (`id_Evento`, `cedula`, `nombre`, `fecha`, `descripcion`, `estado`) VALUES
 (1, 8064454, 'caramelos', '2023-09-20 19:42:00', 'asdasfasfafasdasdasd', 1),
-(2, 8064454, 'sifuentes', '2023-09-20 20:46:00', 'pinpinpinpum', 0),
-(3, 8064454, 'tribilines', '2023-09-20 20:46:00', 'pinpinpinpum', 0),
-(4, 8064454, 'cromozoma', '2023-09-21 20:46:00', 'pinpinpinpumadsssssssssssssssss', 0),
+(2, 8064454, 'sifuentes', '2023-09-20 20:46:00', 'pinpinpinpum', 1),
+(3, 8064454, 'tribilines', '2023-09-20 20:46:00', 'pinpinpinpum', 1),
+(4, 8064454, 'cromozoma', '2023-09-21 20:46:00', 'pinpinpinpumadsssssssssssssssss', 1),
 (9, 8064454, 'alogodon de azucar1', '2023-09-29 21:40:00', 'fghdjhghjghjfghjf', 1),
-(10, 8064454, 'alogodon ', '2023-09-29 21:40:00', 'fghdjhghjghjfghjf', 0),
+(10, 8064454, 'alogodon ', '2023-09-29 21:40:00', 'fghdjhghjghjfghjf', 1),
 (11, 28019006, 'guaco', '2023-09-23 18:07:00', 'asdasdasdasdasd', 1),
 (13, 28019006, 'mesoneros', '2023-09-29 13:12:00', 'asdadasda', 1);
 
@@ -208,9 +210,9 @@ CREATE TABLE `login` (
 --
 
 INSERT INTO `login` (`cedula`, `password`, `estado`, `tipo`) VALUES
-(8064454, 'pbkdf2:sha256:600000$gZXjEruNBqv7guy8$23d83902d68e2f83874c2674d4b9995f99af59115f477186c1291763fca71133', 0, 3),
-(15884430, 'pbkdf2:sha256:600000$0zj4IEMTblSyeXSs$46ee0351ff3673aff939bfc1b6862b2a61d8d45c65904f2ece336e7c8a2d04fc', 0, 2),
-(28019006, 'pbkdf2:sha256:600000$CjBfUJnzhd9vEdL2$9b1dbd168a9c696cc4058f62c28d54ecc226d1c42ac3a063d45ea03aa5d4afb9', 1, 2),
+(8064454, 'pbkdf2:sha256:600000$gZXjEruNBqv7guy8$23d83902d68e2f83874c2674d4b9995f99af59115f477186c1291763fca71133', 1, 3),
+(15884430, 'pbkdf2:sha256:600000$0zj4IEMTblSyeXSs$46ee0351ff3673aff939bfc1b6862b2a61d8d45c65904f2ece336e7c8a2d04fc', 1, 2),
+(28019006, 'pbkdf2:sha256:600000$CjBfUJnzhd9vEdL2$9b1dbd168a9c696cc4058f62c28d54ecc226d1c42ac3a063d45ea03aa5d4afb9', 1, 3),
 (28444555, 'pbkdf2:sha256:600000$VxjK5rjOZu1NuhCX$ad605307f63418e62e41fc30ea399dc00a5c7f11655404644d10468c0a4cc402', 1, 1);
 
 -- --------------------------------------------------------

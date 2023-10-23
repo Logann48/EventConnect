@@ -62,8 +62,8 @@
                     <th>Cédula</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
+                    <th>Teléfono</th>
                     <th>Email</th>
-                    <th>Telefono</th>
                     <th>Dirección</th>
                     <th>Opción</th>
                 </tr>
@@ -78,57 +78,7 @@
                     <td>{{ usuario.3 }}</td>
                     <td>{{ usuario.4 }}</td>
                     <td>{{ usuario.5 }}</td>
-                    <td>
-                        <form action="{{url_for('tablaClientes1')}}" method="post">
-                            <input type="hidden" name="cedula" value="{{ usuario.0 }}">
-                            <input type="hidden" name="estado" value="{{ usuario.8 }}">
-                            <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
-                            <button type="submit" class="btn btn-danger btn-sm">Inhabilitar</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-                
-            </tbody>
-        </table>
-    </div>
-
-    <div class="container">
-        <h2>Usuarios deshabilitados</h2>
-    
-        <div class="input-group flex-nowrap">
-          </div>
-
-        <br>
-        <table class="table table-bordered table-striped" id="tabla-test2">
-            <thead>
-                <tr>
-                    <th>Cédula</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Email</th>
-                    <th>Telefono</th>
-                    <th>Dirección</th>
-                    <th>Opción</th>
-                </tr>
-            </thead>
-            <tbody id="myTable2">
-                {% for inhusuario in inhusuarios %}
-                <tr>
-                    <td>{{ inhusuario.0 }}</td>
-                    <td>{{ inhusuario.1 }}</td>
-                    <td>{{ inhusuario.2 }}</td>
-                    <td>{{ inhusuario.3 }}</td>
-                    <td>{{ inhusuario.4 }}</td>
-                    <td>{{ inhusuario.5 }}</td>
-                    <td>
-                        <form action="" method="post">
-                            <input type="hidden" name="cedula" value="{{ inhusuario.0 }}">
-                            <input type="hidden" name="estado" value="{{ inhusuario.8 }}">
-                            <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
-                            <button type="submit" class="btn btn-primary btn-sm">Habilitar</button>
-                        </form>
-                    </td>
+                    <td><button class="btn btn-danger btn-sm">Deshabilitar</button></td>
                 </tr>
                 {% endfor %}
                 
@@ -151,10 +101,6 @@
 
         $(document).ready(function(){
             $("#tabla-test").DataTable();
-        });
-
-        $(document).ready(function(){
-            $("#tabla-test2").DataTable();
         });
 
     </script>

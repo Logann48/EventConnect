@@ -37,7 +37,7 @@
     </nav>
 
     <div class="container">
-        <h2>Lista de eventos</h2>
+        <h2>Lista de Eventos</h2>
         <table class="table table-bordered table-striped" id="tabla-test">
             <thead>
                 <tr>
@@ -45,6 +45,7 @@
                     <th>Nombre</th>
                     <th>Fecha y hora</th>
                     <th>Descripción</th>
+                    <th>Estado</th>
                     <th>Opciones</th>
                     <th></th>
                 </tr>
@@ -56,6 +57,7 @@
                     <td>{{ evento.2 }}</td>
                     <td>{{ evento.3 }}</td>
                     <td>{{ evento.4 }}</td>
+                    <td>{{ evento.5 }}</td>
                     <td>
                         <form action="{{url_for('tablaEvento1')}}" method="post">
                             <input type="hidden" name="organizer" value="{{ evento.1 }}">
@@ -67,67 +69,7 @@
                             <button type="submit" class="btn btn-danger btn-sm">Inhabilitar</button>
                         </form>
                     </td>
-                    <td>
-                        <form action="{{url_for('actualizarEvento')}}" method="post">
-                            <input type="hidden" name="id" value="{{ evento.0 }}">
-                            <input type="hidden" name="organizer" value="{{ evento.1 }}">
-                            <input type="hidden" name="nombre" value="{{ evento.2 }}">
-                            <input type="hidden" name="fecha_hora" value="{{ evento.3 }}">
-                            <input type="hidden" name="descripcion" value="{{ evento.4 }}">
-                            <input type="hidden" name="estado" value="{{ evento.5 }}">
-                            <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
-                            <button class="btn btn-warning btn-sm">Modificar</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <div class="container">
-        <h2>Eventos inhabilitados</h2>
-        <table class="table table-bordered table-striped" id="tabla-test2">
-            <thead>
-                <tr>
-                    <th>Organizador</th>
-                    <th>Nombre</th>
-                    <th>Fecha y hora</th>
-                    <th>Descripción</th>
-                    <th>Opciones</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody id="myTable2">
-                {% for eventosInh in eventosInh %}
-                <tr>
-                    <td>{{ eventosInh.1 }}</td>
-                    <td>{{ eventosInh.2 }}</td>
-                    <td>{{ eventosInh.3 }}</td>
-                    <td>{{ eventosInh.4 }}</td>
-                    <td>
-                        <form action="{{url_for('tablaEvento1')}}" method="post">
-                            <input type="hidden" name="organizer" value="{{ eventosInh.1 }}">
-                            <input type="hidden" name="nombre" value="{{ eventosInh.2 }}">
-                            <input type="hidden" name="fecha_hora" value="{{ eventosInh.3 }}">
-                            <input type="hidden" name="descripcion" value="{{ eventosInh.4 }}">
-                            <input type="hidden" name="estado" value="{{ eventosInh.5 }}">
-                            <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
-                            <button type="submit" class="btn btn-primary btn-sm">Habilitar</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="{{url_for('actualizarEvento')}}" method="post">
-                        <input type="hidden" name="id" value="{{ eventosInh.0 }}">
-                        <input type="hidden" name="organizer" value="{{ eventosInh.1 }}">
-                        <input type="hidden" name="nombre" value="{{ eventosInh.2 }}">
-                        <input type="hidden" name="fecha_hora" value="{{ eventosInh.3 }}">
-                        <input type="hidden" name="descripcion" value="{{ eventosInh.4 }}">
-                        <input type="hidden" name="estado" value="{{ eventosInh.5 }}">
-                        <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
-                        <button class="btn btn-warning btn-sm">Modificar</button>
-                        </form>
-                    </td>
+                    <td><button class="btn btn-warning btn-sm">Modificar</button></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -139,10 +81,6 @@
       <script>
           $(document).ready(function(){
                 $("#tabla-test").DataTable();
-              });
-        
-          $(document).ready(function(){
-                $("#tabla-test2").DataTable();
               });
       </script>
       

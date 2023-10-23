@@ -49,12 +49,10 @@
 </nav>
 
       <div class="container">
-        <h2>Lista de organizadores</h2>
+        <h2>Lista de Organizadores</h2>
         <div class="input-group flex-nowrap">
-          <a href="{{url_for('registrarorganizador')}}" class="btn btn-primary btn-sm" style="margin-left: 805px; padding: 15px; padding-bottom: 70px; width: 250px;">Agregar Nuevo Organizador</a>
+          <a href="{{url_for('registrarorganizador')}}" class="btn btn-primary" class="btn btn-primary" style="margin-left: 605px;  padding-bottom: 50px; width: 500px; margin-bottom: 40px;">Agregar Nuevo Organizador</a>
         </div>
-        <br>
-        <br>
         <br>
         <table class="table table-bordered table-striped" id="tabla-test">
           <thead>
@@ -62,13 +60,14 @@
                   <th>Cédula</th>
                   <th>Nombre</th>
                   <th>Apellido</th>
-                  <th>Email</th>
                   <th>Teléfono</th>
+                  <th>Email</th>
                   <th>Dirección</th>
                   <th>Opción</th>
               </tr>
           </thead>
           <tbody id="myTable">
+              
               {% for usuario in usuarios %}
               <tr>
                   <td>{{ usuario.0 }}</td>
@@ -85,52 +84,8 @@
                     <input type="hidden" name="telefono" value="{{ usuario.3 }}">
                     <input type="hidden" name="email" value="{{ usuario.4 }}">
                     <input type="hidden" name="direccion" value="{{ usuario.5 }}">
-                    <input type="hidden" name="estado" value="{{ usuario.8 }}">
                     <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
                     <button type="submit" class="btn btn-danger btn-sm">Inhabilitar</button>
-                    </form>
-                  </td>
-              </tr>
-              {% endfor %}
-              
-          </tbody>
-      </table>
-      </div>
-
-      <div class="container">
-        <h2>Organizadores inhabilitados</h2>
-        <table class="table table-bordered table-striped" id="tabla-test2">
-          <thead>
-              <tr>
-                  <th>Cédula</th>
-                  <th>Nombre</th>
-                  <th>Apellido</th>
-                  <th>Email</th>
-                  <th>Teléfono</th>
-                  <th>Dirección</th>
-                  <th>Opción</th>
-              </tr>
-          </thead>
-          <tbody id="myTable2">
-              {% for inhOrgs in inhOrg %}
-              <tr>
-                  <td>{{ inhOrgs.0 }}</td>
-                  <td>{{ inhOrgs.1 }}</td>
-                  <td>{{ inhOrgs.2 }}</td>
-                  <td>{{ inhOrgs.3 }}</td>
-                  <td>{{ inhOrgs.4 }}</td>
-                  <td>{{ inhOrgs.5 }}</td>
-                  <td>
-                    <form action="" method="post">
-                    <input type="hidden" name="cedula" value="{{ inhOrgs.0 }}">
-                    <input type="hidden" name="nombre" value="{{ inhOrgs.1 }}">
-                    <input type="hidden" name="apellido" value="{{ inhOrgs.2 }}">
-                    <input type="hidden" name="telefono" value="{{ inhOrgs.3 }}">
-                    <input type="hidden" name="email" value="{{ inhOrgs.4 }}">
-                    <input type="hidden" name="direccion" value="{{ inhOrgs.5 }}">
-                    <input type="hidden" name="estado" value="{{ inhOrgs.8 }}">
-                    <input type="hidden" name="csrf_token" value="{{csrf_token() }}">
-                    <button type="submit" class="btn btn-primary btn-sm">Habilitar</button>
                     </form>
                   </td>
               </tr>
@@ -154,9 +109,6 @@
 
           $(document).ready(function(){
             $("#tabla-test").DataTable();
-          });
-          $(document).ready(function(){
-            $("#tabla-test2").DataTable();
           });
         </script>
     </div>

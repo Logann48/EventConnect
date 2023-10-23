@@ -296,9 +296,7 @@ def registroevento():
             return render_template('registroEvento.html')
     else:
         return redirect(url_for('login'))
-    
 
-###########################################################################################################
 
 @app.route('/principal')
 @login_required
@@ -362,7 +360,7 @@ def actualDatos():
             
             cur = db.connection.cursor()
             
-            update_query = """UPDATE usuario SET correo = %s, telefono = %s, direccion = %s WHERE cedula = %s"""
+            update_query = """UPDATE usuario SET correo = %s, telefono = %s, direccion = %sWHERE cedula = %s"""
             cur.execute(update_query, (correo, telefono, direccion, cedula))
             db.connection.commit()
 
@@ -410,22 +408,19 @@ def tablaPago1():
 @app.route('/gestionevento')
 @login_required
 def gestionevento():
-    if 'user_type' in session and session['user_type'] == 2 or 3:
+    if 'user_type' in session and session['user_type'] == 2:
         cur = db.connection.cursor()
-        cur2 = db.connection.cursor()
         cur.execute('SELECT * FROM eventos WHERE estado = 1')
-        cur2.execute('SELECT * FROM eventos WHERE estado = 0')
         dataEvent = cur.fetchall()
-        dataInh = cur2.fetchall()
         db.connection.commit()
-        return render_template('gestionevento.html', eventos=dataEvent, eventosInh=dataInh)
+        return render_template('gestionevento.html', eventos=dataEvent)
     else:
         return redirect(url_for('login'))
 
 @app.route('/gestionevento', methods=['GET','POST'])
 @login_required
 def tablaEvento1():
-    if 'user_type' in session and session['user_type'] == 2 or 3:
+    if 'user_type' in session and session['user_type'] == 2:
         if request.method == "POST":
             nombre = request.form['nombre']
             fecha_hora = request.form['fecha_hora']
@@ -433,55 +428,8 @@ def tablaEvento1():
             estado = request.form['estado']
 
             cur = db.connection.cursor()
-            
-            if estado == '1':
-                cur.execute("UPDATE eventos SET estado = 0 WHERE nombre = %s AND fecha = %s AND descripcion = %s AND estado = %s",
-                (nombre, fecha_hora, descripcion, estado))
-            elif estado == '0':
-                cur.execute("UPDATE eventos SET estado = 1 WHERE nombre = %s AND fecha = %s AND descripcion = %s AND estado = %s",
-                (nombre, fecha_hora, descripcion, estado))        
-            
-            db.connection.commit()
-
-        return render_template('InhaEvExito.html')
-    else:
-        return redirect(url_for('login'))
-    
-@app.route('/actualizarEvento', methods=['GET','POST'])
-@login_required
-def actualizarEvento():
-    if 'user_type' in session and session['user_type'] == 2 or 3:
-        if request.method == "POST":
-            nombre = request.form['nombre']
-            fecha_hora = request.form['fecha_hora']
-            descripcion = request.form['descripcion']
-            idEvento = request.form['id']
-
-            cur = db.connection.cursor()
-
-            cur.execute('SELECT nombre, fecha, descripcion FROM eventos WHERE id_Evento = %s', (idEvento,))
-            dataEventOne = cur.fetchone()
-           
-            db.connection.commit()
-
-        return render_template('actualizarEvento.html', datosEvento = dataEventOne)
-    else:
-        return redirect(url_for('login'))
-
-@app.route('/gestionevento', methods=['GET','POST'])
-@login_required
-def modificarEvento():
-    if 'user_type' in session and session['user_type'] == 2 or 3:
-        if request.method == "POST":
-            nombre = request.form['nombre']
-            fecha_hora = request.form['fecha']
-            descripcion = request.form['descripcion']
-            idEvento = request.form['id']
-
-            cur = db.connection.cursor()
-            
-            update_query = """UPDATE evento SET nombre = %s, fecha = %s, descripcion = %s WHERE id_Evento = %s"""
-            cur.execute(update_query, (nombre, fecha_hora, descripcion, idEvento))
+            cur.execute("UPDATE eventos SET estado = 0 WHERE nombre = %s AND fecha = %s AND descripcion = %s AND estado = %s",
+            (nombre, fecha_hora, descripcion, estado))
             db.connection.commit()
 
         return render_template('InhaEvExito.html')
@@ -505,13 +453,10 @@ def administrativo():
 def admineventos():
     if 'user_type' in session and session['user_type'] == 3:
         cur = db.connection.cursor()
-        cur2 = db.connection.cursor()
         cur.execute('SELECT * FROM eventos WHERE estado = 1')
-        cur2.execute('SELECT * FROM eventos WHERE estado = 0')
         dataEvent = cur.fetchall()
-        dataInh = cur2.fetchall()
         db.connection.commit()
-        return render_template('admineventos.html', eventos=dataEvent, eventosInh = dataInh)
+        return render_template('admineventos.html', eventos=dataEvent)
     else:
         return redirect(url_for('login'))
 
@@ -526,20 +471,14 @@ def tablaEvento2():
             estado = request.form['estado']
 
             cur = db.connection.cursor()
-            
-            if estado == '1':
-                cur.execute("UPDATE eventos SET estado = 0 WHERE nombre = %s AND fecha = %s AND descripcion = %s AND estado = %s",
-                (nombre, fecha_hora, descripcion, estado))
-            elif estado == '0':
-                cur.execute("UPDATE eventos SET estado = 1 WHERE nombre = %s AND fecha = %s AND descripcion = %s AND estado = %s",
-                (nombre, fecha_hora, descripcion, estado))        
-            
+            cur.execute("UPDATE eventos SET estado = 0 WHERE nombre = %s AND fecha = %s AND descripcion = %s AND estado = %s",
+            (nombre, fecha_hora, descripcion, estado))
             db.connection.commit()
 
         return render_template('InhaEvAdminExito.html')
     else:
         return redirect(url_for('login'))
-        
+
 ############################################################################
 
 @app.route('/adminorganizadores')
@@ -547,12 +486,9 @@ def tablaEvento2():
 def adminorganizadores():
     if 'user_type' in session and session['user_type'] == 3:
         cur = db.connection.cursor()
-        cur2 = db.connection.cursor()
         cur.execute('SELECT * FROM usuario INNER JOIN login ON usuario.cedula = login.cedula WHERE login.tipo = "2" AND login.estado = 1')
-        cur2.execute('SELECT * FROM usuario INNER JOIN login ON usuario.cedula = login.cedula WHERE login.tipo = "2" AND login.estado = 0')
         dataUsers = cur.fetchall()
-        inhOrg = cur2.fetchall()
-        return render_template('adminorganizadores.html', usuarios = dataUsers, inhOrg = inhOrg)
+        return render_template('adminorganizadores.html', usuarios = dataUsers)
     else:
         return redirect(url_for('login'))
 
@@ -562,17 +498,10 @@ def tablaOrg():
     if 'user_type' in session and session['user_type'] == 3:
         if request.method == "POST":
             cedula = request.form['cedula']
-            estado = request.form['estado']
 
             cur = db.connection.cursor()
-            
-            if estado == '1':
-                cur.execute("UPDATE login SET estado = 0 WHERE cedula = %s AND estado = %s",
-                (cedula, estado,))
-            elif estado == '0':
-                cur.execute("UPDATE login SET estado = 1 WHERE cedula = %s AND estado = %s",
-                (cedula, estado,))
-            
+            cur.execute("UPDATE login SET estado = 0 WHERE cedula = %s",
+            (cedula,))
             db.connection.commit()
 
         return render_template('InhaOrgExito.html')
@@ -586,39 +515,12 @@ def tablaOrg():
 def adminclientes():
     if 'user_type' in session and session['user_type'] == 3:
         cur = db.connection.cursor()
-        cur2 = db.connection.cursor()
-        cur.execute('SELECT * FROM usuario INNER JOIN login ON usuario.cedula = login.cedula WHERE login.tipo = "1" AND login.estado = "1"')
-        cur2.execute('SELECT * FROM usuario INNER JOIN login ON usuario.cedula = login.cedula WHERE login.tipo = "1" AND login.estado = "0"')
+        cur.execute('SELECT * FROM usuario INNER JOIN login ON usuario.cedula = login.cedula WHERE login.tipo = "1"')
         dataUsers = cur.fetchall()
-        InhUsers = cur2.fetchall()
         db.connection.commit()
-        return render_template('adminclientes.html', usuarios = dataUsers, inhusuarios = InhUsers)
+        return render_template('adminclientes.html', usuarios = dataUsers)
     else:
         return redirect(url_for('login'))
-
-@app.route('/adminclientes', methods=['GET','POST'])
-@login_required
-def tablaClientes1():
-    if 'user_type' in session and session['user_type'] == 3:
-        if request.method == "POST":
-            cedula = request.form['cedula']
-            estado = request.form['estado']
-
-            cur = db.connection.cursor()
-            
-            if estado == '1':
-                cur.execute("UPDATE login SET estado = 0 WHERE cedula = %s AND estado = %s",
-                (cedula, estado))
-            elif estado == '0':
-                cur.execute("UPDATE login SET estado = 1 WHERE cedula = %s AND estado = %s",
-                (cedula, estado))
-            
-            db.connection.commit()
-
-        return render_template('InhaUserAdminExito.html')
-    else:
-        return redirect(url_for('login'))
-
 
 #################################################################################################
 @app.route('/adminadmins')
@@ -626,13 +528,10 @@ def tablaClientes1():
 def adminadmins():
     if 'user_type' in session and session['user_type'] == 3:
         cur = db.connection.cursor()
-        cur2 = db.connection.cursor()
         cur.execute('SELECT * FROM usuario INNER JOIN login ON usuario.cedula = login.cedula WHERE login.tipo = "3" AND login.estado = "1"')
-        cur2.execute('SELECT * FROM usuario INNER JOIN login ON usuario.cedula = login.cedula WHERE login.tipo = "3" AND login.estado = "0"')
         dataUsers = cur.fetchall()
-        InhAdmin = cur2.fetchall()
         db.connection.commit()
-        return render_template('adminadmins.html', usuarios = dataUsers, InhAdmin = InhAdmin)
+        return render_template('adminadmins.html', usuarios = dataUsers)
     else:
         return redirect(url_for('login'))
     
@@ -642,17 +541,10 @@ def tablaAdmin():
     if 'user_type' in session and session['user_type'] == 3:
         if request.method == "POST":
             cedula = request.form['cedula']
-            estado = request.form['estado']
 
             cur = db.connection.cursor()
-            
-            if estado == '1':
-                cur.execute("UPDATE login SET estado = 0 WHERE cedula = %s AND estado = %s",
-                (cedula, estado,))
-            elif estado == '0':
-                cur.execute("UPDATE login SET estado = 1 WHERE cedula = %s AND estado = %s",
-                (cedula, estado,))
-            
+            cur.execute("UPDATE login SET estado = 0 WHERE cedula = %s",
+            (cedula,))
             db.connection.commit()
 
         return render_template('InhaAdminExito.html')
@@ -706,7 +598,7 @@ def adminreportes():
         return redirect(url_for('login'))
     
 ############## REPORTES ###################
-@app.route('/reporte1', methods=['GET','POST'])
+@app.route('/reporte1', methods=['POST'])
 @login_required
 def reporte1():
     if 'user_type' in session and session['user_type'] == 3:
@@ -736,8 +628,7 @@ def reporte1():
     else:
         return redirect(url_for('login'))
 
-
-@app.route('/reporte2', methods=['GET','POST'])
+@app.route('/reporte2', methods=['POST'])
 @login_required
 def reporte2():
     if 'user_type' in session and session['user_type'] == 3:
@@ -745,9 +636,7 @@ def reporte2():
         print(num_users)
         width, height = letter
         line_height = 11
-        gap_between_rows = 10
         pdfmetrics.registerFont(TTFont('Times-Bold', 'Times Bold.ttf'))
-        
         c = canvas.Canvas("reporte_Organizadores_activos.pdf", pagesize=letter)
         c.setFont('Times-Bold', 12)
         c.drawCentredString(width / 2, height - 8 * line_height, "Reporte de Organizadores Activos")
@@ -765,16 +654,230 @@ def reporte2():
     else:
         return redirect(url_for('login'))
 
-@app.route('/reporte3', methods=['GET','POST'])
+#############################  REPORTES CON FILTROS ###############################
+
+@app.route('/reporte3', methods=['POST'])##############        CALENDARIO   ################
 @login_required
 def reporte3():
     if 'user_type' in session and session['user_type'] == 3:
-        print(request.form['start-date'])
-        print(request.form['end-date'])
         inicio=request.form['start-date']
         fin=request.form['end-date']
-        data = ModelUser.get_reporte3(db, inicio, fin)
-        if data!=None and "0":
+        if inicio!="" or fin!="":
+            print("este")
+            Num_Rep=4
+            data = ModelUser.get_reporte3(db, inicio, fin,Num_Rep)
+            if data:
+                print(data)
+                width, height = letter
+                line_height = 11
+                gap_between_rows = 10
+                pdfmetrics.registerFont(TTFont('Times-Bold', 'Times Bold.ttf'))
+                # First pass to count the number of pages
+                c = canvas.Canvas(None)
+                start_height = height - 10*line_height
+                for i, row in enumerate(data, start=1):
+                    if i == 1 or row['nombre'] != data[i-2]['nombre']:
+                        start_height -= 5*line_height + gap_between_rows
+                    else:
+                        start_height -= 2*line_height + gap_between_rows
+                    if start_height < 0:
+                        c.showPage()
+                        start_height = height - 10*line_height
+                total_pages = c.getPageNumber()
+                # Second pass to draw the content and include the total page count
+                c = canvas.Canvas(f"reporte_eventos_activos_{inicio}_al_{fin}.pdf", pagesize=letter)
+                c.setFont('Times-Bold', 12)
+                c.drawCentredString(width / 2, height - 8* line_height, f"Reporte de Eventos Activos en el lapso entre {inicio} y {fin}")
+                c.setFont('Times-Roman', 12)
+                c.drawString(width - 150, height - 2.5 * line_height, datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
+                c.drawString(width - 150, height - 5.5 * line_height, f"Administrador: {current_user.cedula}")
+                start_height = height - 10*line_height
+                for i, row in enumerate(data, start=1):
+                    if i == 1 or row['nombre'] != data[i-2]['nombre']:
+                        start_height -= 5*line_height + gap_between_rows
+                        c.setFont('Times-Bold', 12)
+                        c.drawString(30, start_height, f"Nombre del evento: {row['nombre']}")
+                        c.setFont('Times-Roman', 12)
+                        c.drawString(30, start_height - 1.3*line_height, f"ID del organizador: {row['cedula']}")
+                        c.drawString(30, start_height - 2.3*line_height, f"Fecha del evento: {row['fecha']}")
+                    if start_height < 0:
+                        c.showPage()
+                        start_height = height - 10*line_height
+                c.drawString(width - 150, height - 4 * line_height, f"Página {c.getPageNumber()} de {total_pages}")
+                c.showPage()
+                c.save()
+                try:
+                    print("hasta aqui")
+                    return send_file(f"reporte_eventos_activos_{inicio}_al_{fin}.pdf", as_attachment=True)
+                except Exception as e:
+                    return print(str(e))
+        else:
+            Num_Rep=3
+            data = ModelUser.get_reporte3(db, inicio, fin,Num_Rep)
+            if data:
+                print("o este")
+                width, height = letter
+                line_height = 11
+                gap_between_rows = 10
+                pdfmetrics.registerFont(TTFont('Times-Bold', 'Times Bold.ttf'))
+                # First pass to count the number of pages
+                c = canvas.Canvas(None)
+                start_height = height - 10*line_height
+                for i, row in enumerate(data, start=1):
+                    if i == 1 or row['nombre'] != data[i-2]['nombre']:
+                        start_height -= 5*line_height + gap_between_rows
+                    else:
+                        start_height -= 2*line_height + gap_between_rows
+                    if start_height < 0:
+                        c.showPage()
+                        start_height = height - 10*line_height
+                total_pages = c.getPageNumber()
+                # Second pass to draw the content and include the total page count
+                c = canvas.Canvas("reporte_venta_entradas_por_evento.pdf", pagesize=letter)
+                c.setFont('Times-Bold', 12)
+                c.drawCentredString(width / 2, height - 8* line_height, "Reporte de Venta de Entradas por Evento")
+                c.setFont('Times-Roman', 12)
+                c.drawString(width - 150, height - 2.5 * line_height, datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
+                c.drawString(width - 150, height - 5.5 * line_height, f"Administrador: {current_user.cedula}")
+                start_height = height - 10*line_height
+                for i, row in enumerate(data, start=1):
+                    if i == 1 or row['nombre'] != data[i-2]['nombre']:
+                        start_height -= 5*line_height + gap_between_rows
+                        c.setFont('Times-Bold', 12)
+                        c.drawString(30, start_height, f"Nombre del evento: {row['nombre']}")
+                        c.setFont('Times-Roman', 12)
+                        c.drawString(30, start_height - 1.3*line_height, f"ID del organizador: {row['cedula']}")
+                        c.drawString(30, start_height - 2.3*line_height, f"Fecha del evento: {row['fecha']}")
+                    if start_height < 0:
+                        c.showPage()
+                        start_height = height - 10*line_height
+                c.drawString(width - 150, height - 4 * line_height, f"Página {c.getPageNumber()} de {total_pages}")
+                c.showPage()
+                c.save()
+                try:
+                    return send_file("reporte_eventos_activos.pdf", as_attachment=True)
+                except Exception as e:
+                    return print(str(e))
+            else:
+                return redirect(url_for('adminreportes'))
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/reporte4', methods=['POST'])############   VENTA DE ENTRADAS ####################
+@login_required
+def reporte4():
+    if 'user_type' in session and session['user_type'] == 3:
+        inicio=request.form['start-date']
+        fin=request.form['end-date']
+        if inicio!="" or fin!="":
+                Num_Rep=1
+                data = ModelUser.get_report4(db, inicio, fin,Num_Rep)
+                width, height = letter
+                line_height = 11
+                gap_between_rows = 10
+                pdfmetrics.registerFont(TTFont('Times-Bold', 'Times Bold.ttf'))
+                # First pass to count the number of pages
+                c = canvas.Canvas(None)
+                start_height = height - 10*line_height
+                for i, row in enumerate(data, start=1):
+                    if i == 1 or row['nombre'] != data[i-2]['nombre']:
+                        start_height -= 5*line_height + gap_between_rows
+                    else:
+                        start_height -= 2*line_height + gap_between_rows
+                    if start_height < 0:
+                        c.showPage()
+                        start_height = height - 10*line_height
+                total_pages = c.getPageNumber()
+                # Second pass to draw the content and include the total page count
+                c = canvas.Canvas(f"reporte_venta_entradas_por_evento_activo_{inicio}_al_{fin}.pdf", pagesize=letter)
+                c.setFont('Times-Bold', 12)
+                c.drawCentredString(width / 2, height - 8* line_height, f"Reporte de Entradas Vendidas en el lapso {inicio} al {fin} por Evento activo")
+                c.setFont('Times-Roman', 12)
+                c.drawString(width - 150, height - 2.5 * line_height, datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
+                c.drawString(width - 150, height - 5.5 * line_height, f"Administrador: {current_user.cedula}")
+                start_height = height - 10*line_height
+                for i, row in enumerate(data, start=1):
+                    if i == 1 or row['nombre'] != data[i-2]['nombre']:
+                        start_height -= 5*line_height + gap_between_rows
+                        c.drawString(30, start_height, f"Nombre del evento: {row['nombre']}")
+                        c.drawString(30, start_height - 1.3*line_height, f"ID del organizador: {row['cedula']}")
+                        c.drawString(30, start_height - 2.3*line_height, f"Estado del evento: {row['estado']}")
+                    else:
+                        start_height -= 2*line_height + gap_between_rows
+                    c.drawString(30, start_height - 3.3*line_height, f"Tipo de entrada: {row['tipo']}")
+                    c.drawString(30, start_height - 4.3*line_height, f"Cantidad vendida: {row['cantidad_vendida']}")
+                    if start_height < 0:
+                        c.showPage()
+                        start_height = height - 10*line_height
+                c.drawString(width - 150, height - 4 * line_height, f"Página {c.getPageNumber()} de {total_pages}")
+                c.showPage()
+                c.save()
+                try:
+                    return send_file(f"reporte_venta_entradas_por_evento_activo_{inicio}_al_{fin}.pdf", as_attachment=True)
+                except Exception as e:
+                    return str(e)
+        else:
+            Num_Rep=2
+            data = ModelUser.get_report4(db, inicio, fin,Num_Rep)
+            print(data)
+            if inicio=="" or fin=="":
+                if inicio=="" or fin=="":
+                    width, height = letter
+                    line_height = 11
+                    gap_between_rows = 10
+                    pdfmetrics.registerFont(TTFont('Times-Bold', 'Times Bold.ttf'))
+                    # First pass to count the number of pages
+                    c = canvas.Canvas(None)
+                    start_height = height - 10*line_height
+                    for i, row in enumerate(data, start=1):
+                        if i == 1 or row['nombre'] != data[i-2]['nombre']:
+                            start_height -= 5*line_height + gap_between_rows
+                        else:
+                            start_height -= 2*line_height + gap_between_rows
+                        if start_height < 0:
+                            c.showPage()
+                            start_height = height - 10*line_height
+                    total_pages = c.getPageNumber()
+                    # Second pass to draw the content and include the total page count
+                    c = canvas.Canvas("reporte_venta_entradas_por_evento_activo.pdf", pagesize=letter)
+                    c.setFont('Times-Bold', 12)
+                    c.drawCentredString(width / 2, height - 8* line_height, "Reporte de Entradas Vendidas por Evento activo")
+                    c.setFont('Times-Roman', 12)
+                    c.drawString(width - 150, height - 2.5 * line_height, datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
+                    c.drawString(width - 150, height - 5.5 * line_height, f"Administrador: {current_user.cedula}")
+                    start_height = height - 10*line_height
+                    for i, row in enumerate(data, start=1):
+                        if i == 1 or row['nombre'] != data[i-2]['nombre']:
+                            start_height -= 5*line_height + gap_between_rows
+                            c.drawString(30, start_height, f"Nombre del evento: {row['nombre']}")
+                            c.drawString(30, start_height - 1.3*line_height, f"ID del organizador: {row['cedula']}")
+                            c.drawString(30, start_height - 2.3*line_height, f"Estado del evento: {row['estado']}")
+                        else:
+                            start_height -= 2*line_height + gap_between_rows
+                        c.drawString(30, start_height - 3.3*line_height, f"Tipo de entrada: {row['tipo']}")
+                        c.drawString(30, start_height - 4.3*line_height, f"Cantidad vendida: {row['cantidad_vendida']}")
+                        if start_height < 0:
+                            c.showPage()
+                            start_height = height - 10*line_height
+                    c.drawString(width - 150, height - 4 * line_height, f"Página {c.getPageNumber()} de {total_pages}")
+                    c.showPage()
+                    c.save()
+                    try:
+                        return send_file("reporte_venta_entradas_por_evento_activo.pdf", as_attachment=True)
+                    except Exception as e:
+                        return str(e)
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/reporte5', methods=['POST']) ##############          PAGOS APROBADOS        ###############
+@login_required
+def reporte5():
+    if 'user_type' in session and session['user_type'] == 3:
+        inicio=request.form['start-date1']
+        fin=request.form['end-date1']
+        Num_Rep=6
+        data = ModelUser.get_reporte3(db, inicio, fin,Num_Rep)
+        if data:
             width, height = letter
             line_height = 11
             gap_between_rows = 10
@@ -782,39 +885,99 @@ def reporte3():
             # First pass to count the number of pages
             c = canvas.Canvas(None)
             start_height = height - 10*line_height
+            total_monto = 0
             for i, row in enumerate(data, start=1):
-                if i == 1 or row['nombre'] != data[i-2]['nombre']:
-                    start_height -= 5*line_height + gap_between_rows
-                else:
-                    start_height -= 2*line_height + gap_between_rows
+                start_height -= 5*line_height + gap_between_rows
+                total_monto += row['monto']
                 if start_height < 0:
                     c.showPage()
                     start_height = height - 10*line_height
             total_pages = c.getPageNumber()
             # Second pass to draw the content and include the total page count
-            c = canvas.Canvas("reporte_venta_entradas_por_evento.pdf", pagesize=letter)
+            c = canvas.Canvas(f"reporte_Pagos_confirmados_del_{inicio}_al_{fin}.pdf", pagesize=letter)
             c.setFont('Times-Bold', 12)
-            c.drawCentredString(width / 2, height - 8* line_height, "Reporte de Venta de Entradas por Evento")
+            c.drawCentredString(width / 2, height - 8* line_height, f"Reporte de Pagos Confirmados en el periodo del {inicio} al {fin}")
             c.setFont('Times-Roman', 12)
             c.drawString(width - 150, height - 2.5 * line_height, datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
             c.drawString(width - 150, height - 5.5 * line_height, f"Administrador: {current_user.cedula}")
             start_height = height - 10*line_height
             for i, row in enumerate(data, start=1):
-                if i == 1 or row['nombre'] != data[i-2]['nombre']:
-                    start_height -= 5*line_height + gap_between_rows
-                    c.setFont('Times-Bold', 12)
-                    c.drawString(30, start_height, f"Nombre del evento: {row['nombre']}")
-                    c.setFont('Times-Roman', 12)
-                    c.drawString(30, start_height - 1.3*line_height, f"ID del organizador: {row['cedula']}")
-                    c.drawString(30, start_height - 2.3*line_height, f"Fecha del evento: {row['fecha']}")
+                start_height -= 5*line_height + gap_between_rows
+                c.setFont('Times-Bold', 12)
+                c.drawString(30, start_height, f"ID del Pago: {row['ID']}")
+                c.setFont('Times-Roman', 12)
+                c.drawString(30, start_height - 1.3*line_height, f"Cedula del usuario: {row['cedula']}")
+                c.drawString(30, start_height - 2.3*line_height, f"Fecha y Hora del Pago: {row['fecha']}")
+                c.drawString(30, start_height - 3.3*line_height, f"Referencia de Pago: {row['referencia']}")
+                c.drawString(30, start_height - 4.3*line_height, f"Monto: {row['monto']}$")
                 if start_height < 0:
                     c.showPage()
                     start_height = height - 10*line_height
             c.drawString(width - 150, height - 4 * line_height, f"Página {c.getPageNumber()} de {total_pages}")
+            c.setFont('Times-Bold', 12)
+            c.drawCentredString(width / 2, start_height - 6*line_height, f"Importe total de pagos confirmados: {total_monto}$")
             c.showPage()
             c.save()
             try:
-                return send_file("reporte_venta_entradas_por_evento.pdf", as_attachment=True)
+                return send_file(f"reporte_Pagos_confirmados_del_{inicio}_al_{fin}.pdf", as_attachment=True)
+            except Exception as e:
+                return print(str(e))
+        else:
+            return redirect(url_for('adminreportes'))
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/reporte6', methods=['POST'])  ##############         PAGOS PENDIENTES       ################
+@login_required
+def reporte6():
+    if 'user_type' in session and session['user_type'] == 3:
+        inicio=request.form['start-date']
+        fin=request.form['end-date']
+        Num_Rep=7
+        data = ModelUser.get_reporte3(db, inicio, fin,Num_Rep)
+        if data:
+            width, height = letter
+            line_height = 11
+            gap_between_rows = 10
+            pdfmetrics.registerFont(TTFont('Times-Bold', 'Times Bold.ttf'))
+            # First pass to count the number of pages
+            c = canvas.Canvas(None)
+            start_height = height - 10*line_height
+            total_monto = 0
+            for i, row in enumerate(data, start=1):
+                start_height -= 5*line_height + gap_between_rows
+                total_monto += row['monto']
+                if start_height < 0:
+                    c.showPage()
+                    start_height = height - 10*line_height
+            total_pages = c.getPageNumber()
+            # Second pass to draw the content and include the total page count
+            c = canvas.Canvas(f"reporte_Pagos_Pendientes_por_Confirmar_del_{inicio}_al_{fin}.pdf", pagesize=letter)
+            c.setFont('Times-Bold', 12)
+            c.drawCentredString(width / 2, height - 8* line_height, f"Reporte de Pagos Pendientes por Confirmar en el periodo del {inicio} al {fin}")
+            c.setFont('Times-Roman', 12)
+            c.drawString(width - 150, height - 2.5 * line_height, datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
+            c.drawString(width - 150, height - 5.5 * line_height, f"Administrador: {current_user.cedula}")
+            start_height = height - 10*line_height
+            for i, row in enumerate(data, start=1):
+                start_height -= 5*line_height + gap_between_rows
+                c.setFont('Times-Bold', 12)
+                c.drawString(30, start_height, f"ID del Pago: {row['ID']}")
+                c.setFont('Times-Roman', 12)
+                c.drawString(30, start_height - 1.3*line_height, f"Cedula del usuario: {row['cedula']}")
+                c.drawString(30, start_height - 2.3*line_height, f"Fecha y Hora del Pago: {row['fecha']}")
+                c.drawString(30, start_height - 3.3*line_height, f"Referencia de Pago: {row['referencia']}")
+                c.drawString(30, start_height - 4.3*line_height, f"Monto: {row['monto']}$")
+                if start_height < 0:
+                    c.showPage()
+                    start_height = height - 10*line_height
+            c.drawString(width - 150, height - 4 * line_height, f"Página {c.getPageNumber()} de {total_pages}")
+            c.setFont('Times-Bold', 12)
+            c.drawCentredString(width / 2, start_height - 6*line_height, f"Importe total de pagos confirmados: {total_monto}$")
+            c.showPage()
+            c.save()
+            try:
+                return send_file(f"reporte_Pagos_Pendientes_por_Confirmar_del_{inicio}_al_{fin}.pdf", as_attachment=True)
             except Exception as e:
                 return print(str(e))
         else:
@@ -823,60 +986,7 @@ def reporte3():
     else:
         return redirect(url_for('login'))
 
-
-@app.route('/reporte4', methods=['GET','POST'])
-@login_required
-def reporte4():
-    if 'user_type' in session and session['user_type'] == 3:
-        data = ModelUser.get_report4(db)
-        width, height = letter
-        line_height = 11
-        gap_between_rows = 10
-        pdfmetrics.registerFont(TTFont('Times-Bold', 'Times Bold.ttf'))
-        # First pass to count the number of pages
-        c = canvas.Canvas(None)
-        start_height = height - 10*line_height
-        for i, row in enumerate(data, start=1):
-            if i == 1 or row['nombre'] != data[i-2]['nombre']:
-                start_height -= 5*line_height + gap_between_rows
-            else:
-                start_height -= 2*line_height + gap_between_rows
-            if start_height < 0:
-                c.showPage()
-                start_height = height - 10*line_height
-        total_pages = c.getPageNumber()
-        # Second pass to draw the content and include the total page count
-        c = canvas.Canvas("reporte_venta_entradas_por_evento.pdf", pagesize=letter)
-        c.setFont('Times-Bold', 12)
-        c.drawCentredString(width / 2, height - 8* line_height, "Reporte de Venta de Entradas por Evento")
-        c.setFont('Times-Roman', 12)
-        c.drawString(width - 150, height - 2.5 * line_height, datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
-        c.drawString(width - 150, height - 5.5 * line_height, f"Administrador: {current_user.cedula}")
-        start_height = height - 10*line_height
-        for i, row in enumerate(data, start=1):
-            if i == 1 or row['nombre'] != data[i-2]['nombre']:
-                start_height -= 5*line_height + gap_between_rows
-                c.drawString(30, start_height, f"Nombre del evento: {row['nombre']}")
-                c.drawString(30, start_height - 1.3*line_height, f"ID del organizador: {row['cedula']}")
-                c.drawString(30, start_height - 2.3*line_height, f"Estado del evento: {row['estado']}")
-            else:
-                start_height -= 2*line_height + gap_between_rows
-            c.drawString(30, start_height - 3.3*line_height, f"Tipo de entrada: {row['tipo']}")
-            c.drawString(30, start_height - 4.3*line_height, f"Cantidad vendida: {row['cantidad_vendida']}")
-            if start_height < 0:
-                c.showPage()
-                start_height = height - 10*line_height
-        c.drawString(width - 150, height - 4 * line_height, f"Página {c.getPageNumber()} de {total_pages}")
-        c.showPage()
-        c.save()
-        try:
-            return send_file("reporte_venta_entradas_por_evento.pdf", as_attachment=True)
-        except Exception as e:
-            return str(e)
-    else:
-        return redirect(url_for('login'))
-
-############## REPORTES ###################
+################################## REPORTES ########################################
 @app.route('/registro_exitoso')
 def registroexitoso():
     return render_template('exito.html')
@@ -893,4 +1003,3 @@ if __name__ == '__main__':
     app.register_error_handler(401,status_401)
     app.register_error_handler(404,status_404)
     app.run(debug=True)
-
